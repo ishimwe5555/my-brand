@@ -1,7 +1,7 @@
 {
   "name": "mern-tutorial",
   "version": "1.0.0",
-  "description": "Goalsetter App for youtube",
+  "description": "My portfolio",
   "main": "server.js",
   "scripts": {
     "start": "node backend/server.js",
