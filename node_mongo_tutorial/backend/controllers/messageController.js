@@ -45,6 +45,7 @@ const updateMessage = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error("Message is not found")   
 }
+
   const updatedMessage = await Message.findByIdAndUpdate(req.params.id, req.body,{
     new : true,
   })
@@ -56,7 +57,7 @@ const deleteMessage = asyncHandler(async (req, res) => {
 
   if(!message){
     res.status(404)
-    console.log('Message not found');
+    throw new Error('Message not found');
   }
   await message.remove()
   res.status(200).json({
@@ -69,7 +70,7 @@ const deleteMessages = asyncHandler(async (req, res) => {
     const messages = await Message.find()
     if(!messages){
       res.status(404)
-      console.log('No messages are found');
+      throw new Error('Message not found');
     }
       messages.forEach(element => {
          element.remove()

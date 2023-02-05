@@ -2,9 +2,7 @@ const { schema } = require('@hapi/joi/lib/compile');
 const asyncHandler = require('express-async-handler')
 const cloudinary = require('cloudinary').v2;
 const {User,validateUser, } = require('../models/userModel')
-const authenticate = require('../middleware/authenticate');
-
-
+const bcrypt = require('bcrypt');
 
 // CLOUDINARY Configuration 
 cloudinary.config({
@@ -57,6 +55,13 @@ const setUser = asyncHandler(async (req, res) => {
       if (error) return res.status(500).send(error.message);
       if (existingUser) return res.status(409).json({error : 'Email already exists'});
      });
+    
+    const password = req.body.password;
+    bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(password, salt, (err, hashed) => {
+        // Store the hashed password in a database or another storage system.
+    });
+});
      const user = await User.create({
         names : req.body.names,
         username : req.body.username,
@@ -78,6 +83,11 @@ User.findOne({ email: req.body.email }, (error, existingUser) => {
   if (error) return res.status(500).send(error.message);
   if (existingUser) return res.status(400).json({error : 'Email already exists'});
  });
+ const { error } = validateUser(req.body);
+if (error) {
+   res.status(400)
+   throw new Error(error.details[0].message)
+}
   const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body,{
     new : true,
   })
@@ -112,15 +122,7 @@ const deleteUsers = asyncHandler(async (req, res) => {
       user,
     });
   });
-  const authenticateUser = asyncHandler(async (req, res) => {
-    User.findOne({ email: req.body.email, password: req.body.password }, (err, user) => {
-      if (err) return res.status(400).json(err);
-      if (!user) return res.status(404).json({ message: 'User not found' });
-      
-      const token = user.generateAuthToken();
-      res.header('x-auth-token', token).json({ message: 'User authenticated' });
-    });
-  })  
+ 
 
 module.exports = {
   getUsers,
@@ -129,7 +131,6 @@ module.exports = {
   updateUser,
   deleteUser,
   deleteUsers,
-  authenticateUser,
   setProfilePicture,
   //uploadOne,
 };

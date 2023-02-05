@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const {authenticate, authenticateUser }= require('../middleware/authenticate')
 const {
   getMessages,
   getMessage,
@@ -9,7 +10,7 @@ const {
   deleteMessages,
 } = require("../controllers/messageController");
 
-router.route("/").get(getMessages).post(setMessage).delete(deleteMessages);
-router.route("/:id").put(updateMessage).delete(deleteMessage).get(getMessage);
+router.route("/").get(authenticate, getMessages).post(setMessage).delete(authenticate,deleteMessages);
+router.route("/:id").put(authenticate, updateMessage).delete(authenticate, deleteMessage).get(authenticate, getMessage);
 
 module.exports = router;

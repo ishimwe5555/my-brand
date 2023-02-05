@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require('multer');
-const authenticate = require('../middleware/authenticate')
+const {authenticate, authenticateUser }= require('../middleware/authenticate')
 const {
   getUsers,
   getUser,
@@ -9,7 +9,6 @@ const {
   updateUser,
   deleteUser,
   deleteUsers,
-  authenticateUser,
   setProfilePicture,
 } = require("../controllers/userController");
 
