@@ -57,13 +57,24 @@ const setUser = asyncHandler(async (req, res) => {
       if (error) return res.status(500).send(error.message);
       if (existingUser) return res.status(409).json({error : 'Email already exists'});
      });
-     const user = await User.create({
+     const user = new User({
         names : req.body.names,
         username : req.body.username,
         email : req.body.email,
         password : req.body.password,
       })
-     res.status(201).json(user);
+
+user.save((err) => {
+  if (err) {
+    // Handle the error
+    res.status(401).json({error : "User not saved"});
+
+  } else {
+    // User credentials have been saved
+    res.status(201).json(user);
+
+  }
+});
 });
 
 //Update User
