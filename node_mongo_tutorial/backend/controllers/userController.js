@@ -2,7 +2,9 @@ const { schema } = require('@hapi/joi/lib/compile');
 const asyncHandler = require('express-async-handler')
 const cloudinary = require('cloudinary').v2;
 const {User,validateUser, } = require('../models/userModel')
-const bcrypt = require('bcrypt');
+const authenticate = require('../middleware/authenticate');
+const bcrypt = require('bcrypt')
+
 
 // CLOUDINARY Configuration 
 cloudinary.config({
@@ -55,20 +57,23 @@ const setUser = asyncHandler(async (req, res) => {
       if (error) return res.status(500).send(error.message);
       if (existingUser) return res.status(409).json({error : 'Email already exists'});
      });
-    
-    const password = req.body.password;
-    bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(password, salt, (err, hashed) => {
-        // Store the hashed password in a database or another storage system.
-    });
-});
-     const user = await User.create({
+     const user = new User({
         names : req.body.names,
         username : req.body.username,
         email : req.body.email,
         password : req.body.password,
       })
-     res.status(201).json(user);
+
+user.save((err) => {
+  if (err) {
+    // Handle the error
+    res.status(401).json({error : "User not saved"});
+
+  } else {
+    // User credentials have been saved
+    res.status(201).json(user);
+  }
+});
 });
 
 //Update User
@@ -122,7 +127,23 @@ const deleteUsers = asyncHandler(async (req, res) => {
       user,
     });
   });
- 
+  const authenticateUser = asyncHandler(async (req, res) => {
+    User.findOne({ email: req.body.email },async (err, user) => {
+      if (err) return res.status(400).json(err);
+      if (!user) return res.status(404).json({ message: 'User not found' });
+      
+      const isPasswordMatch = await bcrypt.compare(req.body.password, user.password);
+
+      if (!isPasswordMatch) {
+        res.status(400).json({Error: 'Password is incorrect'});
+      }else{
+          console.log(isPasswordMatch);
+      const token = user.generateAuthToken();
+      res.header('x-auth-token', token).json({ message: 'User authenticated' });
+      }
+    
+    });
+  })  
 
 module.exports = {
   getUsers,

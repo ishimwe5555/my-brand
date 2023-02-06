@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Joi = require("@hapi/joi");
 const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
   names: {
@@ -31,6 +31,16 @@ const userSchema = new mongoose.Schema({
   picture: {
     type: Buffer,
   },
+});
+
+userSchema.pre('save', function(next) {
+  const user = this;
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(user.password, salt, (err, hashedPassword) => {
+      user.password = hashedPassword;
+      next();
+    });
+  });
 });
 
 userSchema.methods.generateAuthToken = function() {
