@@ -15,6 +15,9 @@ const postSchema = mongoose.Schema({
     type: "string",
     required: [true, "Please add a post content"],
   },
+  likes: {
+    type: Array,
+  },
 },{
     timestamps : true,
 });

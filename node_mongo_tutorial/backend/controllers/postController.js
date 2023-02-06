@@ -4,7 +4,8 @@ const path = require('path');
 const Post = require('../models/postModel')
 const Comment = require('../models/commentsModel')
 const cloudinary = require('cloudinary').v2;
-const authenticate = require('../middleware/authenticate')
+const authenticate = require('../middleware/authenticate');
+const Like = require('../models/likesModel');
 
  
 // Configuration 
@@ -149,6 +150,47 @@ const getComments = asyncHandler(async (req, res) => {
   res.status(200).json(comments);
 });
 
+// --- LIKES FUNCTIONALITY  ---
+// --- Like POST  ---
+const setLike = asyncHandler(async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.user;
+  //console.log(userId);
+    const post = await Post.findById(postId);
+  try {
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    // Check if the user has already liked the post
+    if (post.likes.includes(userId)) {
+      return res.status(400).json({ error: 'User has already liked this post' });
+    }
+    post.likes.push(userId);
+    await post.save();
+
+    res.status(201).json({ success: true });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+
+  // const like = new Like({
+  //   post:req.params.id,
+  //   user: req.user,
+  // })
+
+  //  // save this like to database
+  // like.save((err, data)=>{
+  //   if(err) return res.json({Error: err});
+  //   return res.status(201).json(data);
+  // })
+})
+
+//Get comments
+const getLikes = asyncHandler(async (req, res) => {
+  const likes = await Like.find()
+  res.status(200).json(likes);
+});
 
 module.exports = {
   getPosts,
@@ -160,4 +202,6 @@ module.exports = {
   setComment,
   getComments,
   upload,
+  getLikes,
+  setLike,
 };
