@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler')
 const cloudinary = require('cloudinary').v2;
 const {User,validateUser, } = require('../models/userModel')
 const authenticate = require('../middleware/authenticate');
-
+const bcrypt = require('bcrypt')
 
 
 // CLOUDINARY Configuration 
@@ -72,7 +72,6 @@ user.save((err) => {
   } else {
     // User credentials have been saved
     res.status(201).json(user);
-
   }
 });
 });
@@ -124,12 +123,20 @@ const deleteUsers = asyncHandler(async (req, res) => {
     });
   });
   const authenticateUser = asyncHandler(async (req, res) => {
-    User.findOne({ email: req.body.email, password: req.body.password }, (err, user) => {
+    User.findOne({ email: req.body.email },async (err, user) => {
       if (err) return res.status(400).json(err);
       if (!user) return res.status(404).json({ message: 'User not found' });
       
+      const isPasswordMatch = await bcrypt.compare(req.body.password, user.password);
+
+      if (!isPasswordMatch) {
+        res.status(400).json({Error: 'Password is incorrect'});
+      }else{
+          console.log(isPasswordMatch);
       const token = user.generateAuthToken();
       res.header('x-auth-token', token).json({ message: 'User authenticated' });
+      }
+    
     });
   })  
 
