@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler')
 const {User} = require('../models/userModel')
+const bcrypt = require('bcrypt')
 
 const authenticate = (req, res, next) => {
   const token = req.header('Authorization').split(' ')[1];
@@ -29,7 +30,6 @@ const authenticateUser = asyncHandler(async (req, res) => {
     if (!isPasswordMatch) {
       res.status(400).json({Error: 'Password is incorrect'});
     }else{
-        console.log(isPasswordMatch);
     const token = user.generateAuthToken();
     res.header('x-auth-token', token).json({ message: 'User authenticated' });
     }
