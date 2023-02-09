@@ -21,5 +21,17 @@ const postSchema = mongoose.Schema({
 },{
     timestamps : true,
 });
+const validatePost = (post) => {
+  const schema = Joi.object({
+    title: Joi.string().min(3).max(100).required(),
+    content: Joi.string().min(5).max(10000).required(),
+    category: Joi.string().min(5).max(100), 
+    image: Joi.string(),
+  });
 
-module.exports = mongoose.model("Post", postSchema)
+  return schema.validate(post);
+};
+
+const Post = mongoose.model("Post", postSchema)
+
+module.exports = {Post, validatePost}

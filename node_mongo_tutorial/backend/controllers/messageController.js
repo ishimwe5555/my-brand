@@ -3,24 +3,30 @@ const asyncHandler = require('express-async-handler')
 //const axios = require('axios');
 const {Message,validateMessage} = require('../models/messageModel')
 
-//Get Single user
+//Get Single message
 const getMessage = asyncHandler(async (req, res) => {
+  if(req.userRole !== 'admin' && req.userId !== req.params.id){
+    res.status(403).json({error : "Unauthorised access. You can only fetch your own message."});
+  }
   try {
 		const message = await Message.findOne({ _id: req.params.id })
-		res.send(message)
+		res.json({message})
 	} catch {
 		res.status(404)
-		res.send({ error: "Message doesn't exist!" })
+		res.sendjson({ error: "Message doesn't exist!" })
 	}
 });
 
-//Get users
+//Get messages
 const getMessages = asyncHandler(async (req, res) => {
+  if(req.userRole !== 'admin'){
+    res.status(403).json({error : 'Unauthorised access. Reserved for admins'});
+  }
   const messages = await Message.find()
   res.status(200).json(messages);
 });
 
-//Set user
+//Send message
 const setMessage = asyncHandler(async (req, res) => {
      
      const { error } = validateMessage(req.body);
@@ -39,6 +45,9 @@ const setMessage = asyncHandler(async (req, res) => {
 });
 //Update Posts
 const updateMessage = asyncHandler(async (req, res) => {
+  if(req.userRole !== 'admin' && req.userId !== req.params.id){
+    res.status(403).json({error : "Unauthorised access. You can only update your own message."});
+  }
   const message = await Message.findById(req.params.id)
 
   if(!message){
@@ -53,6 +62,9 @@ const updateMessage = asyncHandler(async (req, res) => {
 });
 //Delete Single message
 const deleteMessage = asyncHandler(async (req, res) => {
+  if(req.userRole !== 'admin' && req.userId !== req.params.id){
+    res.status(403).json({error : "Unauthorised access. You can only delete your own message."});
+  }
   const message = await Message.findById(req.params.id)
 
   if(!message){
@@ -67,6 +79,9 @@ const deleteMessage = asyncHandler(async (req, res) => {
 
 //Delete All messages
 const deleteMessages = asyncHandler(async (req, res) => {
+  if(req.userRole !== 'admin'){
+    res.status(403).json({error : 'Unauthorised access. Reserved for admins'});
+  }
     const messages = await Message.find()
     if(!messages){
       res.status(404)

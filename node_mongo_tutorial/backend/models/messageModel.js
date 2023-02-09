@@ -27,7 +27,7 @@ const messageSchema = new mongoose.Schema({
 const validateMessage = (message) => {
   const schema = Joi.object({
     names: Joi.string().min(3).max(30).required(),
-    content: Joi.string().min(5).max(30).required(),
+    content: Joi.string().min(5).max(200).required(),
     email: Joi.string().email().required(),
   });
 

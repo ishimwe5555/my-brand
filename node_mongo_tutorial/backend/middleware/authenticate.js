@@ -4,16 +4,16 @@ const {User} = require('../models/userModel')
 const bcrypt = require('bcrypt')
 
 const authenticate = (req, res, next) => {
-  const token = req.header('Authorization').split(' ')[1];
+const fullToken = req.header('Authorization');
 
-  if (!token) {
-    return res.status(400).json({ error: 'Access denied. No token provided' });
+  if (!fullToken) {
+    return res.status(401).json({ error: 'Access denied. No token provided' });
   }
-
   try {
+    const token = fullToken.split(' ')[1];
     const decoded = jwt.verify(token, 'secretkey');
-    req.user = decoded._id;
-    //console.log(req.user)
+    req.userId = decoded._id;
+    req.userRole = decoded.role;
     next();
   } catch (error) {
     res.status(400).json({ error: 'Invalid token' });
@@ -28,12 +28,11 @@ const authenticateUser = asyncHandler(async (req, res) => {
     const isPasswordMatch = await bcrypt.compare(req.body.password, user.password);
 
     if (!isPasswordMatch) {
-      res.status(400).json({Error: 'Password is incorrect'});
+      res.status(401).json({Error: 'Password is incorrect'});
     }else{
     const token = user.generateAuthToken();
-    res.header('x-auth-token', token).json({ message: 'User authenticated' });
+    res.header('x-auth-token', token).json({ message: 'User authenticated', token });
     }
-  
   });
 })  
 

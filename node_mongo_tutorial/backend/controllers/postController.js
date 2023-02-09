@@ -1,19 +1,11 @@
 const asyncHandler = require('express-async-handler')
 const multer = require('multer');
 const path = require('path');
-const Post = require('../models/postModel')
+const {Post, validatePost} = require('../models/postModel')
 const Comment = require('../models/commentsModel')
-const cloudinary = require('cloudinary').v2;
+//const cloudinary = require('cloudinary').v2;
 const authenticate = require('../middleware/authenticate');
 const Like = require('../models/likesModel');
-
- 
-// Configuration 
-cloudinary.config({
-  cloud_name: "dir6akgf8",
-  api_key: "558841897122288",
-  api_secret: "DxV73zCbjvJl2kcgEbCLNMqTFKQ"
-});
 
 //CREATE STORAGE FOR IMAGE
  const storage = multer.diskStorage({
@@ -63,9 +55,11 @@ const setPost = asyncHandler(async (req, res) => {
       //if post not in db, add it
       if (!data) {
           //create a new POST object using the POST model and req.body
+          const image = req.file ? '/uploads/' + req.file.filename : null;
+
           const post = await new Post({
               title:req.body.title,
-              image: '/uploads/' + req.file.filename, // placeholder for now
+              image: image, // placeholder for now
               category: req.body.category,
               content: req.body.content,
           })
@@ -77,12 +71,15 @@ const setPost = asyncHandler(async (req, res) => {
           })
       //if there's an error or the POST is in db, return a message         
       }else{
-          if(err) return res.json({message:"Post already exists"});
+          return res.status(403).json({message:"Post already exists"});
       }
   })    
 });
 //Update Posts
 const updatePost = asyncHandler(async (req, res) => {
+  if(req.userRole !== 'admin' && req.userId !== req.params.id){
+    res.status(403).json({error : "Unauthorised access. You can only update your own post."});
+  }
   const post = await Post.findById(req.params.id)
 
   if(!post){
@@ -96,6 +93,9 @@ const updatePost = asyncHandler(async (req, res) => {
 });
 //Delete single Post
 const deletePost = asyncHandler(async (req, res) => {
+  if(req.userRole !== 'admin'){
+    res.status(403).json({error : 'Unauthorised access. Reserved for admins'});
+  }
   const post = await Post.findById(req.params.id)
 
   if(!post){
@@ -103,13 +103,16 @@ const deletePost = asyncHandler(async (req, res) => {
     return res.json({message:"Post not found"});
   }
   await post.remove()
-  res.status(200).json({
+  res.status(204).json({
     id: req.params.id
   });
 });
 
 //Delete All Posts
 const deletePosts = asyncHandler(async (req, res) => {
+  if(req.userRole !== 'admin'){
+    res.status(403).json({error : 'Unauthorised access. Reserved for admins'});
+  }
   const post = await Post.find()
   if(!post){
     res.status(404).json({error : 'No posts are found'})
@@ -131,7 +134,7 @@ const setComment = asyncHandler(async (req, res) => {
     throw new Error("Please add the required comment details") 
 }
  
-  const comment = await new Comment({
+  const comment =  new Comment({
     post:req.params.id,
     user: req.user,
     text: req.body.text,
@@ -173,22 +176,12 @@ const setLike = asyncHandler(async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
   }
-
-  // const like = new Like({
-  //   post:req.params.id,
-  //   user: req.user,
-  // })
-
-  //  // save this like to database
-  // like.save((err, data)=>{
-  //   if(err) return res.json({Error: err});
-  //   return res.status(201).json(data);
-  // })
 })
 
 //Get comments
 const getLikes = asyncHandler(async (req, res) => {
   const likes = await Like.find()
+  console.log('likes');
   res.status(200).json(likes);
 });
 
