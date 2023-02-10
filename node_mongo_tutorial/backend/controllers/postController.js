@@ -80,11 +80,11 @@ const updatePost = asyncHandler(async (req, res) => {
   if(req.userRole !== 'admin' && req.userId !== req.params.id){
     res.status(403).json({error : "Unauthorised access. You can only update your own post."});
   }
-  const post = await Post.findById(req.params.id)
+  //const post = await Post.findById(req.params.id)
 
-  if(!post){
-    res.status(404).json({message:"Post already exists"});
-    }
+  // if(!post){
+  //   res.status(404).json({message:"Post already exists"});
+  //   }
   const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body,{
     new : true,
   })
@@ -121,7 +121,7 @@ const deletePosts = asyncHandler(async (req, res) => {
     });
  // await user.deleteMany()
   res.status(200).json({
-    post,
+    message : 'All posts are deleted'
   });
 });
           // ##  COMMENTS ###
