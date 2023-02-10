@@ -1,6 +1,5 @@
 const { schema } = require('@hapi/joi/lib/compile');
 const asyncHandler = require('express-async-handler')
-//const axios = require('axios');
 const {Message,validateMessage} = require('../models/messageModel')
 
 //Get Single message
@@ -10,10 +9,10 @@ const getMessage = asyncHandler(async (req, res) => {
   }
   try {
 		const message = await Message.findOne({ _id: req.params.id })
-		res.json({message})
+		res.json(message)
 	} catch {
 		res.status(404)
-		res.sendjson({ error: "Message doesn't exist!" })
+		res.json({ error: "Message doesn't exist!" })
 	}
 });
 
@@ -40,19 +39,17 @@ const setMessage = asyncHandler(async (req, res) => {
         email : req.body.email,
         content : req.body.content,
       })
-   
      res.status(201).json(message);
 });
-//Update Posts
+//Update message
 const updateMessage = asyncHandler(async (req, res) => {
   if(req.userRole !== 'admin' && req.userId !== req.params.id){
-    res.status(403).json({error : "Unauthorised access. You can only update your own message."});
+    res.status(401).json({error : "Unauthorised access. You can only update your own message."});
   }
   const message = await Message.findById(req.params.id)
 
   if(!message){
-    res.status(404)
-    throw new Error("Message is not found")   
+    res.status(404).json("Message is not found")   
 }
 
   const updatedMessage = await Message.findByIdAndUpdate(req.params.id, req.body,{

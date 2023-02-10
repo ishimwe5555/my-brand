@@ -66,7 +66,7 @@ const setPost = asyncHandler(async (req, res) => {
 
           // save this object to database
           post.save((err, data)=>{
-              if(err) return res.json({Error: err});
+              if(err) throw new Error(err);
               return res.status(201).json(data);
           })
       //if there's an error or the POST is in db, return a message         
@@ -83,8 +83,7 @@ const updatePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
   if(!post){
-    res.status(404)
-    return res.json({message:"Post already exists"});
+    res.status(404).json({message:"Post already exists"});
     }
   const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body,{
     new : true,
@@ -99,11 +98,11 @@ const deletePost = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id)
 
   if(!post){
-    res.status(400)
+    res.status(204)
     return res.json({message:"Post not found"});
   }
   await post.remove()
-  res.status(204).json({
+  res.status(200).json({
     id: req.params.id
   });
 });
@@ -136,7 +135,7 @@ const setComment = asyncHandler(async (req, res) => {
  
   const comment =  new Comment({
     post:req.params.id,
-    user: req.user,
+    user: req.userId,
     text: req.body.text,
   })
 
@@ -157,7 +156,7 @@ const getComments = asyncHandler(async (req, res) => {
 // --- Like POST  ---
 const setLike = asyncHandler(async (req, res) => {
   const postId = req.params.id;
-  const userId = req.user;
+  const userId = req.userId;
   //console.log(userId);
     const post = await Post.findById(postId);
   try {

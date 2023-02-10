@@ -9,26 +9,15 @@ chai.use(chaiHttp);
 const expect = chai.expect;
 const should = require('chai').should() //actually call the function
 
- describe('Blog API', async function ()  {
-//   this.timeout(10000)
-//    it('Should return a list of all blogs',async function ()  {
-//        const res =  await request(app)
-//        .get('/api/posts')
-//        .expect(200);
-//        const { body } = res;
-//        body.should.be.an('array')
-//        body.length.should.be.above(0);
-//    });
-
-  // In this test it's expected a list of all posts
+describe('Blog API', async function ()  {
       describe('GET /posts', function() {
         this.timeout(30000)
+        
         it('returns a list of posts', function(done) {
             request(app).get('/api/posts')
                 .expect(200)
                 .end(function(err, res) {
                     expect(res.body.should.be.an('array'))
-                   // expect(res.body).length.should.be.above(0);
                     done(err);
                 });
         });
@@ -38,9 +27,7 @@ const should = require('chai').should() //actually call the function
       describe('GET specific /posts/:id', function() {
         this.timeout(30000)
         it('returns a specific post by ID', function(done) {
-         // var task = request(app).get('/api/posts')[0];
-//console.log(task);
-           request(app).get('/api/posts/63e379e831b6ecc8923445a7')
+           request(app).get('/api/posts/63e4c0f987df977eedc7e000')
                
                 .expect(200)
                 .end(function(err, res) {
@@ -57,11 +44,8 @@ const should = require('chai').should() //actually call the function
         this.timeout(30000)
         it('Creates a new post', function(done) {
        const newBlog = {
-       title: 'Test Blogs2345',
+       title: 'Test MDMDytr',
        content: 'This is a test blog post.',
-       
-      // image: '/uploads/  req.file.filename', // placeholder for now
-      // category: "req.body.category",
      };
             request(app).post('/api/posts')
                 .expect(201)
@@ -74,55 +58,72 @@ const should = require('chai').should() //actually call the function
                 });
         });
     });
+    
+    // In this test it's expected not to new post if post is already there
+    describe('Create new /post', function() {
+      this.timeout(30000)
+      it('Does not Create a new post since same post title is already there', function(done) {
+     const newBlog = {
+     title: 'Test MDMDDMDMD',
+     content: 'This is a test blog post.',
+   };
+          request(app).post('/api/posts')
+              .expect(403)
+              .send(newBlog)
+              .end(function(err, res) {
+                  done(err);
+              });
+      });
+  });
 
       //  ---Updates an existing post----
     describe('Updates an existing /post', function() {
       this.timeout(30000)
       it('Updates an existing /post', function(done) {
      const updatedBlog = {
-     title: 'Updated Test Blogs234',
+     title: 'Updated Test NOWNOWuuuuutiuytuN',
      content: 'This is a test blog post.',
-   };
-          request(app).put('/api/posts/63e379e831b6ecc8923445a7')
-              .expect(403)
+   };   
+          const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU5NDk0MzR9.14mgvK87afz6VluqsWfDrusy6PfCQLTuLGkrsYzP0e8'
+          request(app).put('/api/posts/63e4f7a1cd00aac4082a6280')
+              .set('Authorization', `Bearer ${token}`)
+              .expect(200)
               .send(updatedBlog)
               .end(function(err, res) {
                   expect(res.body.should.be.an('object'))
-                  //expect(res.body.should.have.property('title'));
-                  //expect(res.body.should.have.property('content'));
                   done(err);
               });
       });
   });
+      // --DELETE A POST---
+   describe('Delete a post', function () {
+     it('Should delete a post only if admin', function (done) {
+       const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU4NjUyNTl9.TbKN4QM3WEj1ur14frA8ZgUW6xqZ9XbmKzHt9GeGX0w'
+       request(app)
+         .delete('/api/posts/63e4fabcf3c866dabf570536')
+         .set('Authorization', `Bearer ${token}`)
+         .expect(200)
+         .end((err, res) => {
+           if (err) return done(err);
+          // expect(res.body).to.have.property('message', 'Post deleted successfully');
+           done();
+         });
+     });
 
+     it('Should not delete post if post does not exist', function (done) {
+      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU4NjUyNTl9.TbKN4QM3WEj1ur14frA8ZgUW6xqZ9XbmKzHt9GeGX0w'
+      request(app)
+        .delete('/api/posts/q')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+         // expect(res.body).to.have.property('message', 'Post deleted successfully');
+          done();
+        });
+    });
+
+   })
 
 
   }) 
-
-//        it('Should update an existing blog', function () {
-//      const updatedBlog = {
-//        title: 'Updated Blog',
-//        content: 'This is an updated test blog post.'
-//      };
-
-//      const res = request(app)
-//      .put('/api/posts/63e379e831b6ecc8923445a7')
-//        .send(updatedBlog)
-//        .expect(403)
-//        .expect((res) => {
-//          const blog = res.body;
-//          blog.should.be.an('object');
-//          blog.should.have.property('title', updatedBlog.title);
-//          blog.should.have.property('content', updatedBlog.content);
-//        })
-//    });
-
-
-  
-
-// //   it('Should delete a blog', async function () {
-// //     const res = await request(app)
-// //       .delete('/api/posts/63e24f6e0a5362b77b7dcff7')
-// //       .expect(403)
-// //   });
-// // });
