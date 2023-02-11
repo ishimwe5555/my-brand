@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const postSchema = mongoose.Schema({
   title: {
     type: "string",
+    unique : true,
     required: [true, "Please add a post title"],
   },
   category: {

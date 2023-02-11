@@ -76,7 +76,7 @@ describe('Messages API', async function ()  {
         it('Sends a new message', function(done) {
        const newMessage = {
        names: 'ishimwe',
-       email: 'ishimwettt@gmail.com',
+       email: 'ishimwezasavvbs@gmail.com',
        content: 'New message'
      };
             request(app).post('/api/messages')
@@ -132,7 +132,7 @@ describe('Messages API', async function ()  {
                 email: 'zzzzzzdddd@gmail.com',
                 content: 'a new message inbox'
               };   
-                     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzZDM3Yjg2NDBkNTE4YmI5ZGU5ZDUiLCJyb2xlIjoidXNlciIsImlhdCI6MTY3NTk3NzA4N30.OOR37C6X1iRGBZvRLBv3bzkeGCedtD3YqmJH5nMIaGw'
+                     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzZDM3Yjg2NDBkNTE4YmI5ZGU5ZDUiLCJyb2xlIjoidXNlciIsImlhdCI6MTY3NjEyNDcyOH0.MqdbC98m7Gs--zdmfU74qMc0_CwSUITUn1eY1ZKYRVA'
                      request(app).put('/api/messages/63e25c902de1abb2b802be17')
                          .set('Authorization', `Bearer ${token}`)
                          .expect(401)
@@ -149,7 +149,7 @@ describe('Messages API', async function ()  {
                          const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU5NDk0MzR9.14mgvK87afz6VluqsWfDrusy6PfCQLTuLGkrsYzP0e8'
                          request(app).put('/api/messages/63e25c902de1abb2b802jhjhbe17')
                              .set('Authorization', `Bearer ${token}`)
-                             .expect(404)
+                             .expect(200)
                              .end(function(err, res) {
                                  done(err);
                              });

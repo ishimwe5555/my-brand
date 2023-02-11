@@ -53,7 +53,7 @@ const setUser = asyncHandler(async (req, res) => {
 user.save((err) => {
   if (err) {
     // Handle the error
-    res.status(400).json({error : "User not saved"});
+    res.status(409).json({error : "User not saved"});
 
   } else {
     // User credentials have been saved
@@ -71,7 +71,7 @@ const updateUser = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error("User not found")   
 }
- if(req.userRole !== 'admin' && req.userId !== req.params.id){
+ if(req.userRole !== 'admin'){
     res.status(401).json({error : "Unauthorised access. You can only update your own account."});
   }
 User.findOne({ email: req.body.email } || {username: req.body.username}, (error, existingUser) => {
@@ -90,7 +90,7 @@ if (error) {
 });
 //Delete Single User
 const deleteUser = asyncHandler(async (req, res) => {
-  if(req.userRole !== 'admin' && req.userId !== req.params.id){
+  if(req.userRole !== 'admin'){
     res.status(401).json({error : "Unauthorised access. You can only delete your own account."});
   }
   const user = await User.findById(req.params.id)

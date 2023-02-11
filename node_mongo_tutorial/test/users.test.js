@@ -43,7 +43,7 @@ describe('GET specific /user by id', function() {
   this.timeout(30000)
   it('returns a specified user id if admin', function(done) {
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU5NDk0MzR9.14mgvK87afz6VluqsWfDrusy6PfCQLTuLGkrsYzP0e8'
-      request(app).get('/api/users/63d936e7d73b12818bf27b6f')
+      request(app).get('/api/users/63e5a0cfedc3c4a014052516')
          .set('Authorization', `Bearer ${token}`)
           .expect(200)
           .end(function(err, res) {
@@ -74,7 +74,7 @@ describe('GET specific /user by id', function() {
  const newUser = {
  names: 'ishime',
  username: 'ishimweee',
- email: 'ishime1234@gmail.com',
+ email: 'ishime1234jgg@gmail.com',
  password: 'ishimweee',
  role: 'user'
 };
@@ -128,12 +128,12 @@ describe('Updates an existing /user', function() {
  const updatedBlog = {
   names: 'ishime',
   username: 'ishimwez',
-  email: 'ishimwez2@gmail.com',
+  email: 'ishimwez2yttyt@gmail.com',
   password: 'ishimweee',
   role: 'user'
 };   
       const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU5NDk0MzR9.14mgvK87afz6VluqsWfDrusy6PfCQLTuLGkrsYzP0e8'
-      request(app).put('/api/users/63d936e7d73b12818bf27b6f')
+      request(app).put('/api/users/63e5a0cfedc3c4a014052516')
           .set('Authorization', `Bearer ${token}`)
           .expect(200)
           .send(updatedBlog)
@@ -142,6 +142,22 @@ describe('Updates an existing /user', function() {
               done(err);
           });
   });
+  it('returns if an existing /user not found', function(done) {
+    const updatedBlog = {
+     names: 'ishime',
+     username: 'ishimwez',
+     email: 'ishimwez2yttyt@gmail.com',
+     password: 'ishimweee',
+     role: 'user'
+   };   
+         const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU5NDk0MzR9.14mgvK87afz6VluqsWfDrusy6PfCQLTuLGkrsYzP0e8'
+         request(app).put('/api/users/63e5a0cfedc3c4a014052516a')
+             .set('Authorization', `Bearer ${token}`)
+             .expect(404)
+             .end(function(err, res) {
+                 done(err);
+             });
+     });
   it('Returns if /user validation fails', function(done) {
     const updatedBlog = {
      names: 'ishime',
@@ -151,7 +167,7 @@ describe('Updates an existing /user', function() {
      role: 'user'
    };   
          const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU5NDk0MzR9.14mgvK87afz6VluqsWfDrusy6PfCQLTuLGkrsYzP0e8'
-         request(app).put('/api/users/63d936e7d73b12818bf27b6f')
+         request(app).put('/api/users/63e5a0cfedc3c4a014052516')
              .set('Authorization', `Bearer ${token}`)
              .expect(400)
              .end(function(err, res) {
@@ -163,10 +179,10 @@ describe('Updates an existing /user', function() {
 
  // --DELETE A User---
  describe('Delete a user', function () {
-  it('Should delete a user only if admin', function (done) {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU4NjUyNTl9.TbKN4QM3WEj1ur14frA8ZgUW6xqZ9XbmKzHt9GeGX0w'
+  it('Should delete a user', function (done) {
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzYxMjM3MzR9.HBxfACniY8egA2EkI_1q-ENJhIle0OwmoLfDJe-JjnE'
     request(app)
-      .delete('/api/users/63d9320c9b96fc24d92655f0')
+      .delete('/api/users/63e5a0cfedc3c4a014052516')
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
       .end((err, res) => {
@@ -197,6 +213,22 @@ describe('Updates an existing /user', function() {
       });
   });
  })
+
+  // --DELETE All Users---
+  describe('Delete a user', function () {
+    it('Should delete all users', function (done) {
+      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzYxMjM3MzR9.HBxfACniY8egA2EkI_1q-ENJhIle0OwmoLfDJe-JjnE'
+      request(app)
+        .delete('/api/users/63e5a0cfedc3c4a014052516')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+          done();
+        });
+    });
+
+  })
 
 
 })
