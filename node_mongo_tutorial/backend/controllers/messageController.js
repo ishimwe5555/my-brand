@@ -87,9 +87,7 @@ const deleteMessages = asyncHandler(async (req, res) => {
       messages.forEach(element => {
          element.remove()
       });
-    res.status(200).json({
-      messages,
-    });
+    res.status(200).json(messages);
   });
 
 

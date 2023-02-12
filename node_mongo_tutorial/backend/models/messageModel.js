@@ -11,6 +11,7 @@ const messageSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: false,
     lowercase: true,
   },
   content: {
@@ -32,6 +33,15 @@ const validateMessage = (message) => {
 
   return schema.validate(message);
 };
+// async function dropAndRecreateCollection() {
+//   // Drop the existing collection
+//   await mongoose.connection.dropCollection('messages');
+
+//   // Recreate the collection with the updated schema
+//   const Message = mongoose.model('Message', messageSchema);
+// }
+
+// dropAndRecreateCollection();
 
 const Message = mongoose.model("Message", messageSchema);
 

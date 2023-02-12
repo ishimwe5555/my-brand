@@ -2,12 +2,19 @@ const { assert } = require('chai');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const request= require('supertest');
+const path = require('path')
+const sinon= require('sinon')
 const app = require('../backend/server');
-
-
 chai.use(chaiHttp);
 const expect = chai.expect;
 const should = require('chai').should() //actually call the function
+const Blog = require('../backend/models/postModel')
+
+///FILE UPLOAD TEST///
+
+///FILE UPLOAD TEST///
+
+
 
 describe('Blog API', async function ()  {
       describe('GET /posts', function() {
@@ -27,22 +34,27 @@ describe('Blog API', async function ()  {
       describe('GET specific /posts/:id', function() {
         this.timeout(30000)
         it('returns a specific post by ID', function(done) {
-           request(app).get('/api/posts/63e4c0f987df977eedc7e000')
-               
-                .expect(200)
-                .end(function(err, res) {
+          Blog.findOne().exec((err, blog) => {
+            if (err) {
+              done(err);
+            }
+           request(app).get(`/api/posts/${blog._id}`)
+                  .end(function(err, res) {
+                  if (err) return done(err);
+                  expect(res.statusCode).to.equal(200);
                     expect(res.body.should.be.an('object'))
                     //expect(res.body.should.have.property('title'));
                    // expect(res.body.should.have.property('content'));
-                    done(err);
+                    done();
                 });
+              })
         });
         it('does not return any post if not found', function(done) {
           request(app).get('/api/posts/1')
-              
-               .expect(404)
                .end(function(err, res) {
-                   done(err);
+                if (err) return done(err);
+                expect(res.statusCode).to.equal(404);
+                   done();
                });
        });
     });
@@ -59,10 +71,12 @@ describe('Blog API', async function ()  {
                 .expect(201)
                 .send(newBlog)
                 .end(function(err, res) {
+                  if (err) return done(err);
+                    expect(res.statusCode).to.equal(201);
                     expect(res.body.should.be.an('object'))
                     expect(res.body.should.have.property('title'));
                     expect(res.body.should.have.property('content'));
-                    done(err);
+                    done();
                 });
         });
         it('does not Create a new post if title and content fields are empty', function(done) {
@@ -71,9 +85,10 @@ describe('Blog API', async function ()  {
          // content: '',
         };
                request(app).post('/api/posts')
-                   .expect(400)
                    .end(function(err, res) {
-                       done(err);
+                    if (err) return done(err);
+                    expect(res.statusCode).to.equal(400);
+                       done();
                    });
            });
            it('does not Create a new post if it already exists', function(done) {
@@ -82,10 +97,11 @@ describe('Blog API', async function ()  {
             content: 'existing post',
           };
                  request(app).post('/api/posts')
-                     .expect(403)
                      .end(function(err, res) {
+                      if (err) return done(err);
+                      expect(res.statusCode).to.equal(403);
                       expect(res.body).to.have.property('message', "Post already exists");
-                         done(err);
+                         done();
                      });
              });
     });
@@ -101,13 +117,14 @@ describe('Blog API', async function ()  {
           const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU5NDk0MzR9.14mgvK87afz6VluqsWfDrusy6PfCQLTuLGkrsYzP0e8'
           request(app).put('/api/posts/63e7a3591aee7ce768ee66b1')
               .set('Authorization', `Bearer ${token}`)
-              .expect(200)
               .send(updatedBlog)
               .end(function(err, res) {
+                if (err) return done(err);
+                expect(res.statusCode).to.equal(200);
                   expect(res.body.should.be.an('object'))
                   expect(res.body.should.have.property('title'));
                   expect(res.body.should.have.property('content'));
-                  done(err);
+                  done();
               });
       });
       it('Does not Update an existing /post if not an admin', function(done) {
@@ -118,10 +135,11 @@ describe('Blog API', async function ()  {
              const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzZDM3Yjg2NDBkNTE4YmI5ZGU5ZDUiLCJyb2xlIjoidXNlciIsImlhdCI6MTY3NTk3NzA4N30.OOR37C6X1iRGBZvRLBv3bzkeGCedtD3YqmJH5nMIaGw'
              request(app).put('/api/posts/63e4d7de026ec6165af47491')
                  .set('Authorization', `Bearer ${token}`)
-                 .expect(403)
                  .end(function(err, res) {
+                  if (err) return done(err);
+                  expect(res.statusCode).to.equal(403);
                   expect(res.body).to.have.property('error', 'Unauthorised access. You can only update your own post.');
-                     done(err);
+                     done();
                  });
          });
   });
@@ -132,10 +150,10 @@ describe('Blog API', async function ()  {
        request(app)
          .delete('/api/posts/63e4cc69964b5530b79b7ce7')
          .set('Authorization', `Bearer ${token}`)
-         .expect(403)
          .end((err, res) => {
-           if (err) return done(err);
-           expect(res.body).to.have.property('error', 'Unauthorised access. Reserved for admins');
+          if (err) return done(err);
+          expect(res.statusCode).to.equal(403);           
+          expect(res.body).to.have.property('error', 'Unauthorised access. Reserved for admins');
            done();
          });
      });
@@ -143,24 +161,24 @@ describe('Blog API', async function ()  {
      it('Should not delete post if post does not exist', function (done) {
       const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU4NjUyNTl9.TbKN4QM3WEj1ur14frA8ZgUW6xqZ9XbmKzHt9GeGX0w'
       request(app)
-        .delete('/api/posts/q')
+        .delete('/api/posts/63e7d56299eefd5d78fb4676')
         .set('Authorization', `Bearer ${token}`)
-        .expect(200)
         .end((err, res) => {
           if (err) return done(err);
-         // expect(res.body).to.have.property('message', 'Post not found');
+          expect(res.statusCode).to.equal(204);        
+           // expect(res.body).to.have.property('message', 'Post not found');
           done();
         });
     });
     it('Should delete an existing post', function (done) {
       const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UzYWM5Njc3MWQ5ZjZlMzZkNjEwMDgiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NzU4NjUyNTl9.TbKN4QM3WEj1ur14frA8ZgUW6xqZ9XbmKzHt9GeGX0w'
       request(app)
-        .delete('/api/posts/63e7a3591aee7ce768ee66b1')
+        .delete('/api/posts/63e7a30f1aee7ce768ee66aa')
         .set('Authorization', `Bearer ${token}`)
-        .expect(200)
         .end((err, res) => {
           if (err) return done(err);
-          expect(res.body).to.have.property('id', '63e4fc20ac000149c043f7f5');
+          expect(res.statusCode).to.equal(200);
+          expect(res.body).to.have.property('id', '63e7a30f1aee7ce768ee66aa');
           done();
         });
     });
@@ -173,9 +191,9 @@ describe('Blog API', async function ()  {
         request(app)
           .delete('/api/posts/')
           .set('Authorization', `Bearer ${token}`)
-          .expect(403)
           .end((err, res) => {
             if (err) return done(err);
+            expect(res.statusCode).to.equal(403);            
             expect(res.body).to.have.property('error', 'Unauthorised access. Reserved for admins');
             done();
           });
@@ -186,10 +204,10 @@ describe('Blog API', async function ()  {
        request(app)
          .delete('/api/posts/')
          .set('Authorization', `Bearer ${token}`)
-         .expect(403)
          .end((err, res) => {
-           if (err) return done(err);
-           expect(res.body).to.have.property('message', 'All posts are deleted');
+          if (err) return done(err);
+          expect(res.statusCode).to.equal(403);           
+          expect(res.body).to.have.property('message', 'All posts are deleted');
            done();
          });
      });
@@ -208,11 +226,13 @@ describe('Blog API', async function ()  {
           .expect(201)
           .send(newUser)
           .end(function(err, res) {
+            if (err) return done(err);
+            expect(res.statusCode).to.equal(201);
               expect(res.body.should.be.an('object'))
               expect(res.body.should.have.property('post'));
               expect(res.body.should.have.property('user'));
               expect(res.body.should.have.property('text'));
-              done(err);
+              done();
           });
   });
   it('returns an error if no comment', function(done) {
@@ -222,9 +242,10 @@ describe('Blog API', async function ()  {
       //text: 'ishime comment',
    };
          request(app).post('/api/users')
-             .expect(400)
              .end(function(err, res) {
-                 done(err);
+              if (err) return done(err);
+              expect(res.statusCode).to.equal(400);
+              done();
              });
      });
     })
@@ -232,11 +253,12 @@ describe('Blog API', async function ()  {
  describe('Get all /comment', function() {
   this.timeout(30000)
   it('gets all comments', function(done) {
-      request(app).post('/api/posts/63e7a30f1aee7ce768ee66aa/comments')
-          .expect(200)
+      request(app).get('/api/posts/63e7a30f1aee7ce768ee66aa/comments')
           .end(function(err, res) {
+            if (err) return done(err);
+            expect(res.statusCode).to.equal(200);
               expect(res.body.should.be.an('array'))
-              done(err);
+              done();
           });
     });
     })
