@@ -492,11 +492,7 @@ describe('Database Testing... Waiting for Connection', function() {
           done()
         })
       }) 
-
     })
-
-
-
 
 });
 
