@@ -19,7 +19,7 @@ chai.use(chaiHttp);
 chai.use(cookieParser)
 
 
-describe('Database Testing... Waiting for Connection', function() {
+describe('Database Connecting', function() {
     var testUserSignup = {
         username: "admin103",
         email: "admin103@mail.com",
@@ -36,14 +36,14 @@ describe('Database Testing... Waiting for Connection', function() {
       const db = mongoose.connection;
       db.on('error', console.error.bind(console, 'connection error'));
       db.once('open', function() {
-      console.log('We are connected to test database!');
+      console.log('Database conected successfully!');
         done();
       });
     });
 
     describe('Testing User Routes ',function () {
 
-      it('it should *NOT** GET all the Users Not logged In', (done) => {
+      it('it should not GET all the Users Not logged In', (done) => {
         chai.request(server)
         .get('/users')
         .end((err, res) => {
@@ -53,7 +53,7 @@ describe('Database Testing... Waiting for Connection', function() {
           });
       });
       
-      it('it should **Not** POST a user to database *SignUp* due to bad email format ', (done) => {
+      it('it should not POST a user to database due to bad email format ', (done) => {
         const number = Math.floor(Math.random() * 100 )
         var testUser = {
           username: `Test User${number} Created`,
@@ -69,7 +69,7 @@ describe('Database Testing... Waiting for Connection', function() {
           done();
         });
       });
-      it('it should **Not** POST a user to database *SignUp* due to short username ', (done) => {
+      it('it should not POST a user to database due to short username ', (done) => {
         const number = Math.floor(Math.random() * 100 )
         var testUser = {
           username: `${number}`,
@@ -85,7 +85,7 @@ describe('Database Testing... Waiting for Connection', function() {
           done();
         });
       });
-      it('it should **Not** POST a user to database *SignUp* due to wrong password ', (done) => {
+      it('it should not POST a user to database due to wrong password ', (done) => {
         const number = Math.floor(Math.random() * 100 )
         var testUser = {
           username: `Test User${number} Created`,
@@ -103,7 +103,7 @@ describe('Database Testing... Waiting for Connection', function() {
       });
 
 
-      it('it should **Not** Login a user due to wrong missing fields ', (done) => {
+      it('it should not Login a user due to wrong missing fields ', (done) => {
         var testUser = {
           password: 'Qwerty@12345'
         };
@@ -431,7 +431,7 @@ describe('Database Testing... Waiting for Connection', function() {
         });
 
       })
-      it('it should **NOT** get **Comments**', (done) => {
+      it('it should not get **Comments**', (done) => {
         chai.request(server)
         .get('/blogs/b/29102338400/c')
         .end((err, res) => {
@@ -441,7 +441,7 @@ describe('Database Testing... Waiting for Connection', function() {
           done();
         });
       })
-      it('it should **NOT** POST an Admin user to database *SignUpAdmin* duplicate admins ', (done) => {
+      it('it should not POST an Admin user to database *SignUpAdmin* duplicate admins ', (done) => {
         chai.request(server)
         .post('/users/signup-admin').send({ username: "admin105", email: "admin105@mail.com", password: "Qwerty@12345" })
         .end((err, res) => {

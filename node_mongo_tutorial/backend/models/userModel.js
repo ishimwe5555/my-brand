@@ -34,7 +34,8 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    required : true,
+    default: "user",
+    enum: ["user", "admin"],
   },
   
 });
@@ -61,12 +62,22 @@ const validateUser = (user) => {
       .pattern(new RegExp("^[a-zA-Z0-9]{3,90}$"))
       .required(),
     email: Joi.string().email().required(),
-    role: Joi.string().alphanum().min(3).max(30).required(),
+    //role: Joi.string().alphanum().min(3).max(30).required(),
 
   });
 
   return schema.validate(user);
 };
+
+async function dropAndRecreateCollection() {
+  // Drop the existing collection
+  await mongoose.connection.dropCollection('users');
+
+  // Recreate the collection with the updated schema
+  const User = mongoose.model('User', userSchema);
+}
+
+dropAndRecreateCollection();
 
 const User = mongoose.model("User", userSchema);
 

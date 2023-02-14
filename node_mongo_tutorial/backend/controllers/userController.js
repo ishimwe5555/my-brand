@@ -35,11 +35,11 @@ const setUser = asyncHandler(async (req, res) => {
         throw new Error(error.details[0].message)
      }
      User.findOne({ email: req.body.email }, (error, existingUser) => {
-      if (error) return res.status(500).send(error.message);
+      if (error) return res.status(500).json(error.message);
       if (existingUser) return res.status(409).json({error : 'Email already exists'});
      });
      User.findOne({ username: req.body.username }, (error, existingUser) => {
-      if (error) return res.status(500).send(error.message);
+      if (error) return res.status(500).json(error.message);
       if (existingUser) return res.status(409).json({error : 'Username already exists'});
      });
      const user = new User({
@@ -47,14 +47,12 @@ const setUser = asyncHandler(async (req, res) => {
         username : req.body.username,
         email : req.body.email,
         password : req.body.password,
-        role : req.body.role
       })
 
 user.save((err) => {
   if (err) {
     // Handle the error
     res.status(409).json({error : "User not saved"});
-
   } else {
     // User credentials have been saved
     res.status(201).json(user);

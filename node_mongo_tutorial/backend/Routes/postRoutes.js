@@ -1,3 +1,30 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Post:
+ *       type: object
+ *       required:
+ *         - title
+ *         - content
+ *       properties:
+ *         title:
+ *           type: string
+ *           description: The title of your blog
+ *         category:
+ *           type: string
+ *           description: The blog category
+ *         content:
+ *           type: string
+ *           description: The content the blog was added
+ *       example:
+ *         title: The New Turing Omnibus
+ *         content: Alexander K. Dewdney
+ *         category: false
+ * 
+ */
+
+
 const express = require("express");
 const {authenticate, authenticateUser }= require('../middleware/authenticate')
 
