@@ -435,7 +435,7 @@ describe('Database connecting', function() {
       })
       it('it should *Not get --Comments--', (done) => {
         chai.request(server)
-        .get('/posts/29102338400/comments')
+        .get('/posts/63ebe5323bd8d81b28bf50d0/comments')
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.a('object');
@@ -445,7 +445,7 @@ describe('Database connecting', function() {
       })
       it('it should *Not POST an Admin user to database *SignUpAdmin* duplicate admins ', (done) => {
         chai.request(server)
-        .post('/api/users/').send({ username: "admin105", email: "admin105@mail.com", password: "Qwerty@12345" })
+        .post('/api/users/').send({ username: "user", email: "user@mail.com", password: "password" })
         .end((err, res) => {
           res.should.have.status(409);
           res.body.should.be.a('object');
@@ -469,17 +469,17 @@ describe('Database connecting', function() {
       }) 
       it('it should login With Errors', (done) => {
         chai.request(server)
-        .post('/users/login')
+        .post('/api/users/login')
         .set('content-type', 'application/json')
-        .send({ email: "eddy@mail.com", password: "WrongP@12345" })
+        .send({ email: "user@mail.com", password: "WrongP12345" })
         .end((err, res) => {
           res.should.have.status(401);
         })
 
         chai.request(server)
-        .post('/users/login')
+        .post('/api/users/login')
         .set('content-type', 'application/json')
-        .send({ email: "admin105@mail.com", password: "WrongP@12345" })
+        .send({ email: "admin105@mail.com", password: "WrongP12345" })
         .end((err, res) => {
           res.should.have.status(401);
           done()
@@ -488,9 +488,9 @@ describe('Database connecting', function() {
       }) 
       it('it should try to get users but no admin privileges', (done) => {
         chai.request(server)
-        .get('/users')
+        .get('/api/users')
         .end((err, res) => {
-          res.should.have.status(406);
+          res.should.have.status(401);
           done()
         })
       }) 
