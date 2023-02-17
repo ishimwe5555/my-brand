@@ -13,7 +13,7 @@ const options = {
       },
       servers: [
         {
-          url: 'http://localhost:8000/',
+          url: 'https://my-brand-production-5e26.up.railway.app/',
           description: 'Local Server',
         }
       ],
