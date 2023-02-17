@@ -18,6 +18,8 @@ jobs:
       - image: cimg/node:16.10
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
+    environment:
+      -repo_token: VF3Ta1s7mOVWqtZeYEkxyHaJ3VwemHNkw
     steps:
       # Checkout the code as the first step.
       - checkout
