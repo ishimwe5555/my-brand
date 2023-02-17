@@ -425,7 +425,7 @@ describe('Database connecting', function() {
             .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');
-                  res.body.should.have.property('message').eql("User Deleted");
+                  res.body.should.have.property('id').eql(user);
               done();
             });
           })
