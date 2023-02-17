@@ -185,7 +185,7 @@ describe('Database connecting', function() {
         res.body.should.have.property('token');
         const token = `Bearer ${res.header['x-auth-token']}`
           const blog = {
-                title: "blog test22",
+                title: "blog test223",
                 content: "Hello 202"
             }
           chai.request(server)
@@ -193,7 +193,7 @@ describe('Database connecting', function() {
           .end((err, res) => {
             res.should.have.status(201);
             res.body.should.be.a('object');
-            res.body.should.have.property('title').eql('blog test22');
+            res.body.should.have.property('title').eql('blog test223');
             res.body.should.have.property('content').eql('Hello 202')
           const blog = res.body._id
 
@@ -412,16 +412,16 @@ describe('Database connecting', function() {
 
             chai.request(server)
             .put('/api/users/'+ user)
-            .send({ password: "Qwerty@12345" })
-            .set('Cookie', cookie2)
+            .send({ password: "Qwerty12345" })
+            .set('Authorization', cookie2)
             .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');
             });
 
             chai.request(server)
-            .delete('/users/delete/' + user)
-            .set('Cookie', cookie)
+            .delete('/api/users/' + user)
+            .set('Authorization', cookie)
             .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');
@@ -435,7 +435,7 @@ describe('Database connecting', function() {
       })
       it('it should *Not get --Comments--', (done) => {
         chai.request(server)
-        .get('/blogs/b/29102338400/c')
+        .get('/posts/29102338400/comments')
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.a('object');
@@ -445,7 +445,7 @@ describe('Database connecting', function() {
       })
       it('it should *Not POST an Admin user to database *SignUpAdmin* duplicate admins ', (done) => {
         chai.request(server)
-        .post('/users/signup-admin').send({ username: "admin105", email: "admin105@mail.com", password: "Qwerty@12345" })
+        .post('/api/users/').send({ username: "admin105", email: "admin105@mail.com", password: "Qwerty@12345" })
         .end((err, res) => {
           res.should.have.status(409);
           res.body.should.be.a('object');
