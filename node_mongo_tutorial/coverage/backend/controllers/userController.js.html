@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">34.09% </span>
+                <span class="strong">45.45% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>45/132</span>
+                <span class='fraction'>60/132</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">34.09% </span>
+                <span class="strong">45.45% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>45/132</span>
+                <span class='fraction'>60/132</span>
             </div>
         
             
@@ -225,27 +225,27 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -363,22 +363,22 @@ const setUser = asyncHandler(async (req, res) =&gt; {
         res.status(400)
         throw new Error(error.details[0].message)
      }
-<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >    //  User.findOne({ email: req.body.email }, (error, existingUser) =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    //   if (error) return res.status(500).json(error.message);</span>
-<span class="cstat-no" title="statement not covered" >    //   if (existingUser) return res.status(409).json({error : 'Email already exists'});</span>
-<span class="cstat-no" title="statement not covered" >    //  });</span>
-<span class="cstat-no" title="statement not covered" >    //  User.findOne({ username: req.body.username }, (error, existingUser) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    //   if (error) return res.status(500).json(error.message);</span>
-<span class="cstat-no" title="statement not covered" >    //   if (existingUser) return res.status(409).json({error : 'Username already exists'});</span>
-<span class="cstat-no" title="statement not covered" >    //  });</span>
-<span class="cstat-no" title="statement not covered" >     const user = await User.create({</span>
-<span class="cstat-no" title="statement not covered" >        names : req.body.names,</span>
-<span class="cstat-no" title="statement not covered" >        username : req.body.username,</span>
-<span class="cstat-no" title="statement not covered" >        email : req.body.email,</span>
-<span class="cstat-no" title="statement not covered" >        password : req.body.password,</span>
-<span class="cstat-no" title="statement not covered" >        role: req.body.role</span>
-<span class="cstat-no" title="statement not covered" >      })</span>
-<span class="cstat-no" title="statement not covered" ></span>
+    //  User.findOne({ email: req.body.email }, (error, existingUser) =&gt; {
+    //   if (error) return res.status(500).json(error.message);
+    //   if (existingUser) return res.status(409).json({error : 'Email already exists'});
+    //  });
+    //  User.findOne({ username: req.body.username }, (error, existingUser) =&gt; {
+    //   if (error) return res.status(500).json(error.message);
+    //   if (existingUser) return res.status(409).json({error : 'Username already exists'});
+    //  });
+     const user = await User.create({
+        names : req.body.names,
+        username : req.body.username,
+        email : req.body.email,
+        password : req.body.password,
+        role: req.body.role
+      })
+<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" >//user.save((err) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  //if (err) {</span>
 <span class="cstat-no" title="statement not covered" >    // Handle the error</span>
@@ -466,7 +466,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-17T04:16:56.773Z
+                at 2023-02-17T04:46:35.457Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
