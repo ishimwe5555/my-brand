@@ -28,7 +28,7 @@ jobs:
           pkg-manager: npm
       - run:
           name: Run tests
-          command: cd node-mongo-tutorial && npm test
+          command: cd node_mongo_tutorial && npm test
 
 workflows:
   # Below is the definition of your workflow.
