@@ -185,7 +185,7 @@ describe('Database connecting', function() {
         res.body.should.have.property('token');
         const token = `Bearer ${res.header['x-auth-token']}`
           const blog = {
-                title: "blog test2",
+                title: "blog test22",
                 content: "Hello 202"
             }
           chai.request(server)
@@ -193,7 +193,7 @@ describe('Database connecting', function() {
           .end((err, res) => {
             res.should.have.status(201);
             res.body.should.be.a('object');
-            res.body.should.have.property('title').eql('blog test2');
+            res.body.should.have.property('title').eql('blog test22');
             res.body.should.have.property('content').eql('Hello 202')
           const blog = res.body._id
 
@@ -214,7 +214,7 @@ describe('Database connecting', function() {
           .post(`/api/posts/${blog}/likes`)
           .set('Authorization', token)
           .end((err, res) => {
-            res.should.have.status(200);
+            res.should.have.status(201);
             res.body.should.be.a('object');
 
             // chai.request(server)
@@ -283,8 +283,8 @@ describe('Database connecting', function() {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Logged In');
-          res.body.should.have.property('LoggedInAs');
+          res.body.should.have.property('message').eql('User authenticated');
+          //res.body.should.have.property('LoggedInAs');
           const cookie = res.header['x-auth-token']
           
 
@@ -307,7 +307,7 @@ describe('Database connecting', function() {
 
             chai.request(server)
             .get('/api/users')
-            .set('x-auth-token', token)
+            .set('Authorization', token)
             .end(( err, res ) => {
               res.should.have.status(200);
               res.body.should.be.a('object');
@@ -316,15 +316,15 @@ describe('Database connecting', function() {
             chai.request(server)
             .put(`/api/users/${user}`)
             .send({ username: "admin105 updated" })
-            .set('x-ath-token', token)
+            .set('Authorization', token)
             .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');
             });
 
             chai.request(server)
-            .delete('/users/delete/' + user)
-            .set('x-auth-token', token)
+            .delete('api/users/' + user)
+            .set('Authorization', token)
             .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');

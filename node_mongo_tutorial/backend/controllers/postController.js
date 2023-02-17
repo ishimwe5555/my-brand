@@ -177,7 +177,7 @@ const setLike = asyncHandler(async (req, res) => {
   }
 })
 
-//Get comments
+//Get likes
 const getLikes = asyncHandler(async (req, res) => {
   const likes = await Like.find()
   console.log('likes');
