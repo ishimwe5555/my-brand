@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.3% </span>
+                <span class="strong">97.43% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>36/39</span>
+                <span class='fraction'>38/39</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.92% </span>
+                <span class="strong">84.61% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/13</span>
+                <span class='fraction'>11/13</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.3% </span>
+                <span class="strong">97.43% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>36/39</span>
+                <span class='fraction'>38/39</span>
             </div>
         
             
@@ -107,36 +107,36 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">const jwt = require('jsonwebtoken');
@@ -156,15 +156,15 @@ const fullToken = req.header('Authorization');
     req.userId = decoded._id;
     req.userRole = decoded.role;
     next();
-  } <span class="branch-0 cbranch-no" title="branch not covered" >catch (error) {</span>
-<span class="cstat-no" title="statement not covered" >    res.status(400).json({ error: 'Invalid token' });</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  } catch (error) {
+    res.status(400).json({ error: 'Invalid token' });
+  }
 };
 &nbsp;
 const authenticateUser = asyncHandler(async (req, res) =&gt; {
   User.findOne({ email: req.body.email },async (err, user) =&gt; {
-    if (err) return res.status(400).json(err);
-    if (!user) <span class="branch-0 cbranch-no" title="branch not covered" >return res.status(404).json({ message: 'User not found' });</span>
+    if (err) <span class="branch-0 cbranch-no" title="branch not covered" >return res.status(400).json(err);</span>
+    if (!user) return res.status(404).json({ message: 'User not found' });
     
     const isPasswordMatch = await bcrypt.compare(req.body.password, user.password);
 &nbsp;
@@ -184,7 +184,7 @@ module.exports = {authenticate, authenticateUser};</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-17T08:37:34.042Z
+                at 2023-02-17T13:46:02.094Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
