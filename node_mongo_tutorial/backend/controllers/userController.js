@@ -18,7 +18,7 @@ const getUser = asyncHandler(async (req, res) => {
 
 //Get ALL users
 const getUsers = asyncHandler(async (req, res) => {
- // console.log(req.userRole);
+ //console.log(req.userRole);
   if(req.userRole !== 'admin'){
     res.status(401).json({error : 'Unauthorised access. Reserved for admins'});
   }
@@ -34,30 +34,31 @@ const setUser = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error(error.details[0].message)
      }
-     User.findOne({ email: req.body.email }, (error, existingUser) => {
-      if (error) return res.status(500).json(error.message);
-      if (existingUser) return res.status(409).json({error : 'Email already exists'});
-     });
-     User.findOne({ username: req.body.username }, (error, existingUser) => {
-      if (error) return res.status(500).json(error.message);
-      if (existingUser) return res.status(409).json({error : 'Username already exists'});
-     });
-     const user = new User({
+    //  User.findOne({ email: req.body.email }, (error, existingUser) => {
+    //   if (error) return res.status(500).json(error.message);
+    //   if (existingUser) return res.status(409).json({error : 'Email already exists'});
+    //  });
+    //  User.findOne({ username: req.body.username }, (error, existingUser) => {
+    //   if (error) return res.status(500).json(error.message);
+    //   if (existingUser) return res.status(409).json({error : 'Username already exists'});
+    //  });
+     const user = await User.create({
         names : req.body.names,
         username : req.body.username,
         email : req.body.email,
         password : req.body.password,
+        role: req.body.role
       })
 
-user.save((err) => {
-  if (err) {
+//user.save((err) => {
+  //if (err) {
     // Handle the error
-    res.status(409).json({error : "User not saved"});
-  } else {
+   // res.status(409).json({error : "User not saved"});
+ // } else {
     // User credentials have been saved
     res.status(201).json(user);
-  }
-});
+  //}
+//});
 });
 
 //Update User

@@ -18,7 +18,7 @@ const options = {
         }
       ],
     },
-    apis: ['backend/routes/userRoutes.js'],
+    apis: ['backend/routes/*.js'],
   }
 
 module.exports = options

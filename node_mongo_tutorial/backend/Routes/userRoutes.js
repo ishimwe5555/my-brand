@@ -1,6 +1,11 @@
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *      bearerAuth:
+ *         type: http
+ *         scheme: bearer
+ *         bearerFormat: JWT
  *   schemas:
  *     signup:
  *       type: object
@@ -26,7 +31,7 @@
  *         names: Norbert Ishimwe
  *         username: ishimwe
  *         email: ishimwe@mail.com
- *         password: Qwerty12345
+ *         password: norbert1234
  *     login:
  *       type: object
  *       required:
@@ -40,8 +45,8 @@
  *           type: string
  *           description: Encrypted password of user
  *       example:
- *         email: admin105@mail.com
- *         password: Qwert12345
+ *         email: ishimwe@mail.com
+ *         password: norbert1234
  *     response:
  *       type: object
  *       required:
@@ -159,7 +164,42 @@
  *             schema:
  *               $$ref: '#/components/schemas/errormessage'
  * 
- * /users/login:
+ *   get:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: get all Users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Users Fetched
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/response' 
+ * 
+ *   put:
+ *     summary: Updates user details
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/editprofilepic'
+ *     responses:
+ *       200:
+ *         description: Profile Picture Updated 
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/editusernameresponse'
+ *       400:
+ *         description: profile pic is invalid
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/errormessage'
+ * /api/users/login:
  *   post:
  *     summary: Login as a normal user
  *     tags: [Users]
@@ -183,93 +223,7 @@
  *             schema:
  *               $ref: '#/components/schemas/errormessage'
  * 
- * /users:
- *   get:
- *     summary: get all Users
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/login'
- *     responses:
- *       200:
- *         description: Users Fetched
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/response'
- * /users/edit/username:
- *   put:
- *     summary: Update Username
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/editusername'
- *     responses:
- *       200:
- *         description: Username Updated
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/editusernameresponse'
- *       406:
- *         description: Username is invalid
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/response'
- * /users/edit/profilepic:
- *   put:
- *     summary: Update profile picture
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/editprofilepic'
- *     responses:
- *       200:
- *         description: Profile Picture Updated 
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/editusernameresponse'
- *       400:
- *         description: profile pic is invalid
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/errormessage'
- * /users/edit/password:
- *   put:
- *     summary: Change password
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/changepassword'
- *     responses:
- *       200:
- *         description: Password Changed
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/response'
- *       406:
- *         description: Invalid password
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/errormessage'
- * /users/delete/{id}:
+ * /api/users/delete/{id}:
  *   delete:
  *     summary: Delete User
  *     tags: [Users]
@@ -307,7 +261,7 @@ const upload = multer({ storage });
 
 router.route("/").get(authenticate, getUsers).post(setUser).delete(authenticate, deleteUsers);
 router.route("/:id").put(authenticate, updateUser).delete(authenticate, deleteUser).get(authenticate, getUser);
-router.route("/authenticate").post(authenticateUser)
+router.route("/login").post(authenticateUser)
 //router.route("/:id/upload-profile-picture").post(upload.single('picture'),setProfilePicture);
 
 module.exports = router;

@@ -62,22 +62,22 @@ const validateUser = (user) => {
       .pattern(new RegExp("^[a-zA-Z0-9]{3,90}$"))
       .required(),
     email: Joi.string().email().required(),
-    //role: Joi.string().alphanum().min(3).max(30).required(),
+    role: Joi.string().alphanum(),
 
   });
 
   return schema.validate(user);
 };
 
-async function dropAndRecreateCollection() {
-  // Drop the existing collection
-  await mongoose.connection.dropCollection('users');
+// async function dropAndRecreateCollection() {
+//   // Drop the existing collection
+//   await mongoose.connection.dropCollection('users');
 
-  // Recreate the collection with the updated schema
-  const User = mongoose.model('User', userSchema);
-}
+//   // Recreate the collection with the updated schema
+//   const User = mongoose.model('User', userSchema);
+// }
 
-dropAndRecreateCollection();
+// dropAndRecreateCollection();
 
 const User = mongoose.model("User", userSchema);
 
