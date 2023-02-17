@@ -14,7 +14,7 @@ const options = {
       servers: [
         {
           url: 'https://my-brand-production-5e26.up.railway.app/',
-          description: 'Local Server',
+          description: 'API Server',
         }
       ],
     },
