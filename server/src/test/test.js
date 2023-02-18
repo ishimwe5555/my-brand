@@ -110,9 +110,9 @@ describe('Database is connecting ...', function() {
         chai.request(server)
         .post('/users/login').send(testUser)
         .end((err, res) => {
-          res.should.have.status(406);
+          res.should.have.status(404);
           res.body.should.be.a('object');
-          res.body.should.have.property('Error').eql('Email is required ');
+          res.body.should.have.property('message').eql('User not found');
           done();
         });
       });

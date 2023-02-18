@@ -130,7 +130,7 @@ const {
 
 router.route("/").get(getPosts).post(upload.single('image'), setPost).delete(deletePosts);
 router.route("/:id").put(authenticate, updatePost).delete(authenticate, deletePost).get(getPost);
-router.route("/:id/comments").get(authenticate,getComments).post(authenticate, setComment)
+router.route("/:id/comments").get(getComments).post(authenticate, setComment)
 router.route("/:id/likes").get(authenticate,getLikes).post(authenticate, setLike)
 
 module.exports = router;

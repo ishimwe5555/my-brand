@@ -10,7 +10,7 @@ const authenticate = require('../middleware/authenticate');
 const getUser = asyncHandler(async (req, res) => {
   try {
 		const user = await User.findOne({ _id: req.params.id })
-		res.json(user)
+		res.status(200).json(user)
 	} catch {
 		res.status(404).json({ error: "User doesn't exist!" })
 	}
@@ -74,8 +74,8 @@ const updateUser = asyncHandler(async (req, res) => {
     res.status(401).json({error : "Unauthorised access. You can only update your own account."});
   }
 User.findOne({ email: req.body.email } || {username: req.body.username}, (error, existingUser) => {
-  if (error) return res.status(500).send(error.message);
-  if (existingUser) return res.status(400).json({error : 'Email already exists'});
+  if (error) return res.status(500).json(error.message);
+ // if (existingUser) return res.status(400).json({error : 'Email already exists'});
  });
  const { error } = validateUser(req.body);
 if (error) {

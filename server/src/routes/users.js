@@ -427,7 +427,7 @@ passport.use('login',new LocalStrategy({
                         return done(null, false, { message: "Password is incorrect" })
                     }
                 } else {
-                    return done(null, false, { message: "User not Found. Try to SignUp" })
+                    return done(null, false, { message: "User not Found. SignUp first" })
                 }
             })
         } catch(err) {

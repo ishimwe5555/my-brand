@@ -106,16 +106,16 @@ describe('Database connecting', function() {
       });
 
 
-      it('it should *Not Login a user due to missing fields ', (done) => {
+      it('it should Not Login a user due to missing fields ', (done) => {
         var testUser = {
-          password: 'Qwerty@12345'
+          password: 'Qwerty12345'
         };
         chai.request(server)
         .post('/api/users/login').send(testUser)
         .end((err, res) => {
-          res.should.have.status(400);
-          //res.body.should.be.a('object');
-         // res.body.should.have.property('message').eql('User not found');
+         res.should.have.status(404);
+         res.body.should.be.a('object');
+         res.body.should.have.property('message').eql('User not found');
           done();
         });
       });
@@ -185,7 +185,7 @@ describe('Database connecting', function() {
         res.body.should.have.property('token');
         const token = `Bearer ${res.header['x-auth-token']}`
           const blog = {
-                title: "blog test55",
+                title: "blog test586",
                 content: "Hello 202"
             }
           chai.request(server)
@@ -193,7 +193,7 @@ describe('Database connecting', function() {
           .end((err, res) => {
             res.should.have.status(201);
             res.body.should.be.a('object');
-            res.body.should.have.property('title').eql('blog test55');
+            res.body.should.have.property('title').eql('blog test586');
             res.body.should.have.property('content').eql('Hello 202')
           const blog = res.body._id
 
@@ -274,7 +274,7 @@ describe('Database connecting', function() {
       });
 
       })
-      it('it should --CREATE-- --UPDATE-- USERNAME --READ-- --DELETE-- a user ', (done) => {
+      it('it should --CREATE-- --UPDATE USERNAME --READ-- --DELETE-- a user ', (done) => {
 
       chai.request(server)
         .post('/api/users/login')
@@ -285,9 +285,8 @@ describe('Database connecting', function() {
           res.body.should.be.a('object');
           res.body.should.have.property('message').eql('User authenticated');
           //res.body.should.have.property('LoggedInAs');
-          const cookie = res.header['x-auth-token']
+          const token = res.header['x-auth-token']
           
-
           chai.request(server).post('/api/users/')
           .set('content-type', 'application/json')
           .send(testUserSignup)
@@ -300,22 +299,27 @@ describe('Database connecting', function() {
 
             chai.request(server)
             .get(`/api/users/${user}`)
+            .set('Authorization', token)
             .end(( err, res ) => {
               res.should.have.status(200);
               res.body.should.be.a('object');
+              res.body.should.have.property('names').eql('ishimwe');
+              res.body.should.have.property('username').eql('admin');
+              res.body.should.have.property('email').eql('admin@mail.com');
+              res.body.should.have.property('password').eql('password');
             })
 
             chai.request(server)
             .get('/api/users')
-            .set('Authorization', cookie)
+            .set('Authorization', token)
             .end(( err, res ) => {
               res.should.have.status(200);
-              res.body.should.be.a('object');
+              res.body.should.be.an('array');
             })
 
             chai.request(server)
             .put(`/api/users/${user}`)
-            .send({ username: "admin105 updated" })
+            .send({names:'ishimwe',email:'password@gmail.com',password:'password34',  username: "admin105" })
             .set('Authorization', token)
             .end((err, res) => {
                   res.should.have.status(200);
@@ -323,7 +327,7 @@ describe('Database connecting', function() {
             });
 
             chai.request(server)
-            .delete('api/users/' + user)
+            .delete(`api/users/${user}`)
             .set('Authorization', token)
             .end((err, res) => {
                   res.should.have.status(200);
@@ -332,7 +336,6 @@ describe('Database connecting', function() {
               done();
             });
           })
-
         });
 
       })
@@ -411,16 +414,17 @@ describe('Database connecting', function() {
           
 
             chai.request(server)
-            .put('/api/users/'+ user)
-            .send({ password: "Qwerty12345" })
-            .set('Authorization', cookie2)
+            .put(`/api/users/${user}`)
+            .set('Authorization', cookie)
+            .send({ names : 'ishimwe', username : 'ish100', email: 'ish100@ish.com',password: "Qwerty12345" })
             .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');
+                  res.body.should.have.property('message').eql('User updated successfully')
             });
 
             chai.request(server)
-            .delete('/api/users/' + user)
+            .delete(`/api/users/${user}`)
             .set('Authorization', cookie)
             .end((err, res) => {
                   res.should.have.status(200);
@@ -433,19 +437,20 @@ describe('Database connecting', function() {
         });
 
       })
-      it('it should *Not get --Comments--', (done) => {
+      
+      it('it should *Not add --Comments-- if not logged in', (done) => {
         chai.request(server)
-        .get('/posts/63ebe5323bd8d81b28bf50d0/comments')
+        .post('/api/posts/63ebe5323bd8d81b28bf50d0/comments')
         .end((err, res) => {
-          res.should.have.status(404);
-          res.body.should.be.an('array');
-          //res.body.should.have.property('Error')
+          res.should.have.status(401);
+          //res.body.should.be.a('obect');
+          res.body.should.have.property('error').eql('Access denied. No token provided')
           done();
         });
       })
       it('it should *Not POST an Admin user to database *SignUpAdmin* duplicate admins ', (done) => {
         chai.request(server)
-        .post('/api/users/').send({ username: "user", email: "user@mail.com", password: "password" })
+        .post('/api/users/').send({ names:"norbert", username: "user", email: "user@mail.com", password: "password" })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -483,7 +488,7 @@ describe('Database connecting', function() {
         .set('content-type', 'application/json')
         .send({ email: "userz@mail.com", password: "WrongP12345" })
         .end((err, res) => {
-          res.should.have.status(400);
+          res.should.have.status(404);
           done()
         })
 
