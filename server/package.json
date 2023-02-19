@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "server": "nodemon index.js",
     "test": "c8 --reporter=lcov --reporter=html mocha src/test/test.js --recursive --exit --forceExit --timeout 80000 ",
     "coverage": "c8 --reporter=text npm run test"
   },

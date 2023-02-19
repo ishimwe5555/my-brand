@@ -20,15 +20,15 @@ chai.use(chaiHttp);
 chai.use(cookieParser)
 
 
-describe('Database is connecting ...', function() {
+describe('Database Testing... Waiting for Connection', function() {
     var testUserSignup = {
         username: "admin103",
         email: "admin103@mail.com",
         password: "Qwert@12345"
       };
       var testUserLogin = {
-        email: "admin105@mail.com",
-        password: "Qwert@12345"
+        email: "ishimwe@mail.com",
+        password: "Ishimwe@1234"
       };
 
     console.log(__dirname)
@@ -44,7 +44,7 @@ describe('Database is connecting ...', function() {
 
     describe('Testing User Routes ',function () {
 
-      it('it should *NOT GET all the Users Not logged In', (done) => {
+      it('it should *NOT** GET all the Users Not logged In', (done) => {
         chai.request(server)
         .get('/users')
         .end((err, res) => {
@@ -53,7 +53,7 @@ describe('Database is connecting ...', function() {
           });
       });
       
-      it('it should Not POST a user to database *SignUp* due to bad email format ', (done) => {
+      it('it should **Not** POST a user to database *SignUp* due to bad email format ', (done) => {
         const number = Math.floor(Math.random() * 100 )
         var testUser = {
           username: `Test User${number} Created`,
@@ -69,7 +69,7 @@ describe('Database is connecting ...', function() {
           done();
         });
       });
-      it('it should Not POST a user to database *SignUp* due to short username ', (done) => {
+      it('it should **Not** POST a user to database *SignUp* due to short username ', (done) => {
         const number = Math.floor(Math.random() * 100 )
         var testUser = {
           username: `${number}`,
@@ -85,7 +85,7 @@ describe('Database is connecting ...', function() {
           done();
         });
       });
-      it('it should Not POST a user to database *SignUp* due to wrong password ', (done) => {
+      it('it should **Not** POST a user to database *SignUp* due to wrong password ', (done) => {
         const number = Math.floor(Math.random() * 100 )
         var testUser = {
           username: `Test User${number} Created`,
@@ -103,21 +103,21 @@ describe('Database is connecting ...', function() {
       });
 
 
-      it('it should Not Login a user due to wrong missing fields ', (done) => {
+      it('it should **Not** Login a user due to wrong missing fields ', (done) => {
         var testUser = {
           password: 'Qwerty@12345'
         };
         chai.request(server)
         .post('/users/login').send(testUser)
         .end((err, res) => {
-          res.should.have.status(404);
+          res.should.have.status(406);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('User not found');
+          res.body.should.have.property('Error').eql('Email is required ');
           done();
         });
       });
 
-      it('it should CREATE GET UPDATE DELETE a message and get and delete', (done) => {
+      it('it should **CREATE** **GET** **UPDATE** **DELETE** a message and get and delete', (done) => {
 
         chai.request(server)
         .post('/users/login')
@@ -170,9 +170,7 @@ describe('Database is connecting ...', function() {
   
       })
 
-
-
-      it('it should CREATE GET UPDATE DELETE a blog and get and delete', (done) => {
+      it('it should **CREATE** **GET** **UPDATE** **DELETE** a blog and get and delete', (done) => {
 
       chai.request(server)
       .post('/users/login')
@@ -270,7 +268,7 @@ describe('Database is connecting ...', function() {
 
       })
 
-      it('it should UPDATE USERNAME READ DELETE a user ', (done) => {
+      it('it should **UPDATE** USERNAME **READ** **DELETE** a user ', (done) => {
 
         chai.request(server)
           .post('/users/login')
@@ -332,7 +330,7 @@ describe('Database is connecting ...', function() {
           });
   
       })
-      it('it should UPDATE PROFILE PIC READ DELETE a user ', (done) => {
+      it('it should **UPDATE** PROFILE PIC **READ** **DELETE** a user ', (done) => {
 
           chai.request(server)
             .post('/users/login')
@@ -389,7 +387,7 @@ describe('Database is connecting ...', function() {
     
       })
 
-      it('it should UPDATE PASSWORD READ DELETE a user ', (done) => {
+      it('it should **UPDATE** PASSWORD **READ** **DELETE** a user ', (done) => {
 
       chai.request(server)
         .post('/users/login')
@@ -452,7 +450,7 @@ describe('Database is connecting ...', function() {
 
       })
 
-      it('it should NOT get Comments', (done) => {
+      it('it should **NOT** get **Comments**', (done) => {
         chai.request(server)
         .get('/blogs/b/29102338400/c')
         .end((err, res) => {
@@ -462,7 +460,7 @@ describe('Database is connecting ...', function() {
           done();
         });
       })
-      it('it should NOT POST an Admin user to database *SignUpAdmin* duplicate admins ', (done) => {
+      it('it should **NOT** POST an Admin user to database *SignUpAdmin* duplicate admins ', (done) => {
         chai.request(server)
         .post('/users/signup-admin').send({ username: "admin105", email: "admin105@mail.com", password: "Qwerty@12345" })
         .end((err, res) => {
@@ -505,7 +503,7 @@ describe('Database is connecting ...', function() {
         })
 
       })
-      it('it should Test for errors', (done) => {
+      it('it should **Test** for errors', (done) => {
 
         chai.request(server)
         .post('/users/login')
@@ -589,7 +587,7 @@ describe('Database is connecting ...', function() {
   
       })
 
-      it('it should CREATE GET UPDATE DELETE a blog and get and delete', (done) => {
+      it('it should **CREATE** **GET** **UPDATE** **DELETE** a blog and get and delete', (done) => {
 
         chai.request(server)
         .post('/users/login')
@@ -658,9 +656,7 @@ describe('Database is connecting ...', function() {
             done()
           });
         });
-  
         })
-      
 
     })
 

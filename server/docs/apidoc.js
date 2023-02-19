@@ -8,15 +8,15 @@ const options = {
         version: "1.0.0",
         description: "Blogs, Messages and User apis",
         contact: {
-          name: "Mugisha Jedidiah Eddy", 
-          email: "eddymugisha65@gmail.com", 
+          name: "Ishimwe Norbert", 
+          email: "ishimwe96@gmail.com", 
           url: "web.com",
         },
       },
       servers: [
         {
           url: 'https://my-brand-production.up.railway.app/',
-          description: 'Api Link',
+          description: 'Api server',
         }
       ],
       components: {

@@ -43,7 +43,7 @@ dotenv.config()
 //mongoose connection		
 mongoose.set('strictQuery', false)
 connect(
-    process.env.MONGO_KEY,
+    process.env.MONGO_URI,
     {
       dbName: "Portfolio",
       useUnifiedTopology: true,
