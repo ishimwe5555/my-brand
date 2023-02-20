@@ -15,7 +15,7 @@ const options = {
       },
       servers: [
         {
-          url: 'https://my-brand-production.up.railway.app/',
+          url: 'https://my-portfolio-production-2587.up.railway.app/',
           description: 'Api server',
         }
       ],
