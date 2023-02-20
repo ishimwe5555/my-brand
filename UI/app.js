@@ -153,5 +153,5 @@ var form = document
       body: JSON.stringify(user)
     });
     let result = await response.json();
-    console.log(response);
+    console.log(result);
     })

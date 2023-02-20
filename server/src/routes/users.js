@@ -21,7 +21,7 @@
  *       example:
  *         username: ishimwe
  *         email: ishimwe@mail.com
- *         password: Qwerty@12345
+ *         password: Pass@12345
  *     login:
  *       type: object
  *       required:
@@ -35,8 +35,8 @@
  *           type: string
  *           description: Encrypted password of user
  *       example:
- *         email: admin105@mail.com
- *         password: Qwert@12345
+ *         email: administrator@mail.com
+ *         password: Pass@12345
  *     response:
  *       type: object
  *       required:
