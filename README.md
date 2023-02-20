@@ -1,4 +1,4 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/ishimwe5555/my-brand/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/ishimwe5555/my-brand/tree/master)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/ishimwe5555/my-brand/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/ishimwe5555/my-brand/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/ishimwe5555/my-brand/badge.svg?branch=master)](https://coveralls.io/github/ishimwe5555/my-brand?branch=master)
 
 # my-brand
