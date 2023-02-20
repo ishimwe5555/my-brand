@@ -140,5 +140,5 @@ var form = document
      var email = document.getElementById("email").value;
      var username = document.getElementById("username").value;
      var password = document.getElementById("password").value;
-     console.log(names+email+username+password);
+     console.log("names+email+username+password");
     })
