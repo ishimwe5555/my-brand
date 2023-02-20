@@ -134,11 +134,24 @@
 
 var form = document
    .getElementById("signup-btn")
-   .addEventListener("click", (e) => {
+   .addEventListener("click", async (e) => {
      e.preventDefault();
-     var names = document.getElementById("names").value;
-     var email = document.getElementById("email").value;
-     var username = document.getElementById("username").value;
-     var password = document.getElementById("password").value;
-     console.log("names+email+username+password");
+     
+     let user = {
+     //names: document.getElementById("names").value,
+     email: document.getElementById("email").value,
+     username: document.getElementById("username").value,
+     password: document.getElementById("password").value,
+
+    };
+    
+    let response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(user)
+    });
+    let result = await response.json();
+    console.log(response);
     })
