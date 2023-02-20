@@ -19,8 +19,8 @@
  *           type: string
  *           description: Encrypted password of user
  *       example:
- *         username: mugishaeddy
- *         email: eddy@mail.com
+ *         username: ishimwe
+ *         email: ishimwe@mail.com
  *         password: Qwerty@12345
  *     login:
  *       type: object
@@ -54,7 +54,7 @@
  *       example:
  *         code: 200
  *         message: Logged In
- *         LoggedInAs: { _id: "wq323ee2e211r13r1e312e", username: "mugishaeddy", "email": "eddy@mail.com", publicId: "", imageUrl: "", admin: false}
+ *         LoggedInAs: { _id: "wq323ee2e211r13r1e312e", username: "ishimwe", "email": "ishimwe@mail.com", publicId: "", imageUrl: "", admin: false}
  *     errormessage:
  *       type: object
  *       required:
@@ -75,7 +75,7 @@
  *           type: string
  *           description: The New Username
  *       example:
- *         username: eddymugishaupdated
+ *         username: ishimweupdated
  *     editusernameresponse:
  *       type: object
  *       required:
@@ -93,7 +93,7 @@
  *       example:
  *         code: 200
  *         message: Logged In
- *         UpdatedUser: { _id: "wq323ee2e211r13r1e312e", username: "eddymugishaupdated", "email": "eddy@mail.com", publicId: "", imageUrl: "", admin: false}
+ *         UpdatedUser: { _id: "wq323ee2e211r13r1e312e", username: "ishimweupdated", "email": "ishimwe@mail.com", publicId: "", imageUrl: "", admin: false}
  *     editprofilepic:
  *       type: file
  *       required:
