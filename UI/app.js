@@ -147,36 +147,46 @@ async function postData(url = '', data = {}) {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
-
-postData('https://example.com/answer', { answer: 42 })
-  .then((data) => {
-    console.log(data); // JSON data parsed by `data.json()` call
-  });
   
+let user = {
+  //names: document.getElementById("names").value,
+  email: document.getElementById("email").value,
+  username: document.getElementById("username").value,
+  password: document.getElementById("password").value,
+
+ };
+
+
+
 // ****SIGN-UP***
 
 var form = document
    .getElementById("signup-btn")
    .addEventListener("click", async (e) => {
      e.preventDefault();
-     
-     let user = {
-     //names: document.getElementById("names").value,
-     email: document.getElementById("email").value,
-     username: document.getElementById("username").value,
-     password: document.getElementById("password").value,
 
-    };
+     postData('https://my-portfolio-production-2587.up.railway.app/users/signup', { user })
+  .then((data) => {
+    console.log(data); // JSON data parsed by `data.json()` call
+  });
+     
+    //  let user = {
+    //  //names: document.getElementById("names").value,
+    //  email: document.getElementById("email").value,
+    //  username: document.getElementById("username").value,
+    //  password: document.getElementById("password").value,
+
+    // };
     
-    let response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(user)
-    });
-    let result = await response.json();
-    console.log(result);
+    // let response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/signup', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json;charset=utf-8'
+    //   },
+    //   body: JSON.stringify(user)
+    // });
+    // let result = await response.json();
+    // console.log(result);
     })
 
 
