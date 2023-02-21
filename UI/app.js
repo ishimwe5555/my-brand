@@ -130,32 +130,35 @@
 // })
 
 // Example POST method implementation:
-async function postData(url = '', data = {}) {
-  // Default options are marked with *
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  });
-  return response.json(); // parses JSON response into native JavaScript objects
-}
+// async function postData(url = '', data = {}) {
+//   // Default options are marked with *
+//   const response = await fetch(url, {
+//     method: 'POST', // *GET, POST, PUT, DELETE, etc.
+//     mode: 'cors', // no-cors, *cors, same-origin
+//     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+//     credentials: 'same-origin', // include, *same-origin, omit
+//     headers: {
+//       'Content-Type': 'application/json'
+//       // 'Content-Type': 'application/x-www-form-urlencoded',
+//     },
+//     redirect: 'follow', // manual, *follow, error
+//     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+//     body: JSON.stringify(data) // body data type must match "Content-Type" header
+//   });
+//   return response.json(); // parses JSON response into native JavaScript objects
+// }
   
-let user = {
-  //names: document.getElementById("names").value,
-  email: document.getElementById("email").value,
-  username: document.getElementById("username").value,
-  password: document.getElementById("password").value,
+// let user = {
+//   //names: document.getElementById("names").value,
+//   email: document.getElementById("email").value,
+//   username: document.getElementById("username").value,
+//   password: document.getElementById("password").value,
 
- };
-
+//  };
+//  postData('https://my-portfolio-production-2587.up.railway.app/users/signup', { user })
+//  .then((data) => {
+//    console.log(data); // JSON data parsed by `data.json()` call
+//  });
 
 
 // ****SIGN-UP***
@@ -163,34 +166,73 @@ let user = {
 var form = document
    .getElementById("signup-btn")
    .addEventListener("click", async (e) => {
-     e.preventDefault();
+     e.preventDefault();  
+     var signupMessage = document.getElementById("errors-success-signup");
 
-     postData('https://my-portfolio-production-2587.up.railway.app/users/signup', { user })
-  .then((data) => {
-    console.log(data); // JSON data parsed by `data.json()` call
-  });
-     
-    //  let user = {
-    //  //names: document.getElementById("names").value,
-    //  email: document.getElementById("email").value,
-    //  username: document.getElementById("username").value,
-    //  password: document.getElementById("password").value,
-
-    // };
+     let user = {
+     //names: document.getElementById("names").value,
+     email: document.getElementById("email").value,
+     username: document.getElementById("username").value,
+     password: document.getElementById("password").value,
+    };
     
-    // let response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/signup', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json;charset=utf-8'
-    //   },
-    //   body: JSON.stringify(user)
-    // });
-    // let result = await response.json();
-    // console.log(result);
+    let response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(user)
+    });
+    let result = await response.json();
+    console.log(result.code);
+    if(!result.code===409)
+    {
+      signupMessage.innerHTML =
+               '<div id="errors" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: #191; border-radius: 3px; border: 1px solid #1eb136;; >' +
+               '<p style="width: 100%; margin:0; padding: 0; text-align: center;"> Email/Username is already registered</p> </div>'; 
+         clearForm();  
+    }
+    if(result.code===201){
+      signupMessage.innerHTML =
+           '<div id="errors" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: #191; border-radius: 3px; border: 1px solid #1eb136;; >' +
+           '<p style="width: 100%; margin:0; padding: 0; text-align: center;"> User registered successfully! </p> </div>';
+         clearForm();  
+          }
     })
 
 
+// ****LOG-IN***
 
+var form = document
+   .getElementById("loginBtn")
+   .addEventListener("click", async (e) => {
+     e.preventDefault();  
+    var signupMessage = document.getElementById("errors-success-signup");
 
+     //let user = {
+     //names: document.getElementById("names").value,
+     //email: document.getElementById("email").value,
+     const username= document.getElementById("usernameLogin").value;
+     const password= document.getElementById("passwordLogin").value;
+    //};
+    fetch('https://my-portfolio-production-2587.up.railway.app/users/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({username, password})
+    })
+    .then(response => {
+      if (response.ok) {
+      window.location = "admin/dashboard.html" 
 
-
+        // Redirect to home page or show success message
+      } else {
+        throw new Error('Login failed');
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      // Show error message
+    });
+  });  
