@@ -3,9 +3,9 @@ if(!LoggedUser){
   alert('You are not authenticated! Please log in to access this page.')
   location.href = "../index.html"
 }
-
-const l = document.querySelector('#logged-user')
-l.innerHTML = LoggedUser
+const userData = JSON.parse(LoggedUser)
+const usernameHolder = document.querySelector('#logged-user')
+usernameHolder.innerHTML = userData.username
 
 const logout = document.getElementById('logout-btn')
 logout.addEventListener('click',(e)=>{
@@ -17,14 +17,20 @@ logout.addEventListener('click',(e)=>{
 
 let allBlogs = [];
 const retrieving = async () => {
-  allBlogs = await JSON.parse(localStorage.getItem("blogs"));
-  //console.log(allBlogs);
-  allBlogs.sort((a, b) => a.id - b.id).reverse();
+  const response = await fetch('https://my-portfolio-production-2587.up.railway.app/blogs/');
+  const result = await response.json();
+  allBlogs = result.Blogs;
+
+  console.log(allBlogs);
+  if(allBlogs.length<1){
+    container.innerHTML = '<h4>NO BLOGS POSTED!!</h4>'
+  }
+  allBlogs.sort((a, b) => a.date - b.date).reverse();
   allBlogs.map((blog) => {
     const container = document.getElementById("all-blogs");
     const coverImg = new Image();
-    coverImg.src = blog.coverImage;
-    const blogId = blog.id;
+    coverImg.src = blog.imageUrl;
+    const blogId = blog._id;
     // let truncatedText = text
     let displayTitle;
     if(blog.title.split(" ").length > 9){
@@ -57,6 +63,3 @@ const retrieving = async () => {
 window.onload = () => {
   retrieving();
 };
-
-
-//---UPDATE BLOG---

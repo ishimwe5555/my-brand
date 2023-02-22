@@ -46,31 +46,39 @@ var form = document
       //If there no previously added messages, the newly added message will be added to the local storage
        try{
     const title = document.getElementById("title").value;
-    const category = document.getElementById("category").value;
-    const coverImage = document.getElementById("cover-image").value;
+    //const category = document.getElementById("category").value;
+    const coverImage = document.getElementById("cover-image");
     const content = document.getElementById("content").value;
+    const token = localStorage.getItem('auth-token')
     
-        var data = new FormData()
-        if (coverImage && coverImage.files && coverImage.files.length > 0) {
-          data.append('blogImage', coverImage.files[0]);
-        }
-        data.append('content', content)
-        data.append('title', title)
+    var data = new FormData()
+       // if (coverImage && coverImage.files && coverImage.files.length > 0) {
+    data.append('title', title)
+    data.append('content', content)
+    data.append('blogImage', coverImage.files[0]);
+    console.log(coverImage.files[0]);
+      //  }
+       
+        //data.append('blogImage', coverImage.files[0]);
+
         const rawResponse = await fetch('https://my-portfolio-production-2587.up.railway.app/blogs/create', {
           method: 'POST',
-          body: data,
+          body: JSON.stringify(data),
           headers: {
           'Authorization' : `Bearer ${token}`
           }
         });
-       // const blogData = await rawResponse.json();
-        
- submitMessage.innerHTML =
+        const result = await rawResponse.json();
+        if(!result.ok){
+          console.log(result);
+          submitMessage.innerHTML =
           '<div id="errors" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: #191; border-radius: 3px; border: 1px solid #1eb136;; >' +
-          '<p style="width: 100%; margin:0; padding: 0; text-align: center;"> Blog added successfully! </p> </div>';
+          '<p style="width: 100%; margin:0; padding: 0; text-align: center;"> Blog not added! </p> </div>';
           clearForm()
+        }
+          
   // Redirect to dashboard or do something else with the response data
-  location.href = "dashboard/admin-dashboard.html"
+  //location.href = "../admin-dashboard.html"
 } catch (error) {
   console.error(error);
 }
@@ -84,5 +92,5 @@ function clearForm() {
   document.getElementById("category").value = "";
   document.getElementById("cover-image").value = "";
   document.getElementById("content").value = "";
-  document.getElementById("references").value = ""; 
+  //document.getElementById("references").value = ""; 
 }

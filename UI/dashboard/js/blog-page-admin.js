@@ -8,10 +8,12 @@ if(!LoggedUser){
 const url = window.location.href.split('%27');
 const blogID = url[1]
 const blogPostHTML = document.getElementById('blog-post-id');
-const blogPosts = JSON.parse(localStorage.getItem('blogs'));
+const response = await fetch('https://my-portfolio-production-2587.up.railway.app/blogs/');
+const result = await response.json();
+const blogPosts = result.Blogs;
 
-const l = 'Admin'
-//l.innerHTML = LoggedUser
+//const l = 'Admin'
+l.innerHTML = LoggedUser.username
 
 
 let numberOfComments = localStorage.getItem('comments')? JSON.parse(localStorage.getItem('comments')).length : 0
@@ -24,7 +26,9 @@ const myblog = blogPosts.filter(post=> post.id == blogID);
 let blogImage = new Image();
 blogImage.src= myblog[0].coverImage;
 
-    blogPostHTML.innerHTML =`
+
+
+blogPostHTML.innerHTML =`
     <div class="blog-title">
     <h4>${myblog[0].title}</h4>
 </div>

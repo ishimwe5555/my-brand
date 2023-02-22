@@ -229,16 +229,17 @@ var form = document
   }
 
   const data = await response.json();
-  //console.log(data.userId);
+  console.log(data);
   const userId = data.userId;
   const token = data.token;
   const userData = await fetch(`https://my-portfolio-production-2587.up.railway.app/users/u/${userId}`)
   const userDataJson = await userData.json()
-  localStorage.setItem('LoggedUser', userDataJson.data.username );
+  const userCredentials = userDataJson.data
+  localStorage.setItem('LoggedUser', JSON.stringify(userCredentials));
   localStorage.setItem('auth-token', token );
 
 
-  //console.log(userDataJson.data.username)
+  //console.log(userDataJson.data)
   // Redirect to dashboard or do something else with the response data
   location.href = "dashboard/dashboard.html"
 } catch (error) {

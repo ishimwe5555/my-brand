@@ -9,8 +9,11 @@ l.innerHTML = LoggedUser
 const url = window.location.href.split('%27');
 const blogID = url[1]
 const blogPostHTML = document.getElementById('blog-post-id');
-const blogPosts = JSON.parse(localStorage.getItem('blogs'));
+const response = await fetch('https://my-portfolio-production-2587.up.railway.app/blogs/');
+const result = await response.json();
+const blogPosts = result.Blogs;
 
+//console.log(blogPosts);
 const allComments = localStorage.getItem('comments')? JSON.parse(localStorage.getItem('comments')) : [];
 const blogComments = allComments.filter(comment => comment.blogID == blogID)
 //console.log(blogComments);
