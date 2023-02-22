@@ -224,10 +224,12 @@ var form = document
     })
     .then(response => {
       if (response.ok) {
-      window.location = "admin/dashboard.html" 
-
+      window.location = "admin/dashboard.html"
+    
+       
         // Redirect to home page or show success message
       } else {
+        console.log(response);
         throw new Error('Login failed');
       }
     })
