@@ -169,21 +169,21 @@ var form = document
      e.preventDefault();  
      var signupMessage = document.getElementById("errors-success-signup");
 
-     let user = {
+     const user = {
      //names: document.getElementById("names").value,
      email: document.getElementById("email").value,
      username: document.getElementById("username").value,
      password: document.getElementById("password").value,
     };
     
-    let response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/signup', {
+    const response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
       body: JSON.stringify(user)
     });
-    let result = await response.json();
+    const result = await response.json();
     console.log(result.code);
     if(!result.code===409)
     {
@@ -207,34 +207,36 @@ var form = document
    .getElementById("loginBtn")
    .addEventListener("click", async (e) => {
      e.preventDefault();  
-    var signupMessage = document.getElementById("errors-success-signup");
+    var loginMessage = document.getElementById("errors-success-login");
+     const credentials = {
+      email: document.getElementById("usernameLogin").value,
+      password: document.getElementById("passwordLogin").value,
+    };
 
-     //let user = {
-     //names: document.getElementById("names").value,
-     //email: document.getElementById("email").value,
-     const username= document.getElementById("usernameLogin").value;
-     const password= document.getElementById("passwordLogin").value;
-    //};
-    fetch('https://my-portfolio-production-2587.up.railway.app/users/login/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({username, password})
-    })
-    .then(response => {
-      if (response.ok) {
-      window.location = "admin/dashboard.html"
-    
-       
-        // Redirect to home page or show success message
-      } else {
-        console.log(response);
-        throw new Error('Login failed');
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      // Show error message
-    });
-  });  
+    try{
+    const response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify(credentials)
+  })
+ 
+  if (!response.ok) {
+    loginMessage.innerHTML =
+       '<div id="errors-login" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: #191; border-radius: 3px; border: 1px solid #b1361e; >' +
+       '<p style="width: 100%; margin:0; padding: 0; text-align: center;">Invalid login details! </p> </div>'
+  }
+
+  const data = await response.json();
+  console.log(data);
+  location.href = "dashboard/dashboard.html"
+  // Redirect to dashboard or do something else with the response data
+} catch (error) {
+  console.error(error);
+}
+});
+
+
+
+
