@@ -7,7 +7,6 @@ if(!LoggedUser){
 const l = document.querySelector('#logged-user')
 l.innerHTML = LoggedUser
 
-
 let url = "";
 var imageInput = document.getElementById("cover-image");
 imageInput.addEventListener("change", () => {
@@ -25,10 +24,10 @@ var form = document
     e.preventDefault();
 
     //gets each blog input
-    var title = document.getElementById("title").value;
-    var category = document.getElementById("category").value;
-    var coverImage = document.getElementById("cover-image").value;
-    var content = document.getElementById("content").value;
+    const title = document.getElementById("title").value;
+    const category = document.getElementById("category").value;
+    const coverImage = document.getElementById("cover-image").value;
+    const content = document.getElementById("content").value;
     var submitMessage = document.getElementById("errors-success");
     const token = localStorage.getItem('auth-token')
     //   var regex = new RegExp(expression);
@@ -46,8 +45,15 @@ var form = document
       // checks if there are some users  stored previously in the local storage and retrieve them if any
       //If there no previously added messages, the newly added message will be added to the local storage
        try{
+    const title = document.getElementById("title").value;
+    const category = document.getElementById("category").value;
+    const coverImage = document.getElementById("cover-image").value;
+    const content = document.getElementById("content").value;
+    
         var data = new FormData()
-        data.append('blogImage', image.files[0])
+        if (coverImage && coverImage.files && coverImage.files.length > 0) {
+          data.append('blogImage', coverImage.files[0]);
+        }
         data.append('content', content)
         data.append('title', title)
         const rawResponse = await fetch('https://my-portfolio-production-2587.up.railway.app/blogs/create', {
@@ -57,9 +63,8 @@ var form = document
           'Authorization' : `Bearer ${token}`
           }
         });
-        const content = await rawResponse.json();
+       // const blogData = await rawResponse.json();
         
-  
  submitMessage.innerHTML =
           '<div id="errors" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: #191; border-radius: 3px; border: 1px solid #1eb136;; >' +
           '<p style="width: 100%; margin:0; padding: 0; text-align: center;"> Blog added successfully! </p> </div>';
