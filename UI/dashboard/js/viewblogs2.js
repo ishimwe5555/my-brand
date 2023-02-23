@@ -7,11 +7,13 @@ const userData = JSON.parse(LoggedUser)
 const usernameHolder = document.querySelector('#logged-user')
 usernameHolder.innerHTML = userData.username
 
-const logout = document.getElementById('logout-btn')
+const logout = document.getElementById('logout')
 logout.addEventListener('click',(e)=>{
   e.preventDefault()
-  //alert('kk')
+  alert('logged out')
   window.localStorage.removeItem('LoggedUser')
+    window.localStorage.removeItem('LoggedUser')
+
   location.href= '../index.html'
 })
 

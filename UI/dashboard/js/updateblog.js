@@ -4,6 +4,15 @@ if(!LoggedUser){
    alert('You are not authenticated! Please log in to access this page.')
    location.href = "../index.html"
  }
+ const logout = document.getElementById('logout')
+logout.addEventListener('click',(e)=>{
+  e.preventDefault()
+  //alert('kk')
+  window.localStorage.removeItem('LoggedUser')
+  window.localStorage.removeItem('auth-token')
+
+  location.href= '../index.html'
+})
 const title = document.querySelector('#title')
 const category = document.querySelector('#category')
 const coverImage = document.querySelector('#cover-image')

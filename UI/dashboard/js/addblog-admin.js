@@ -4,6 +4,14 @@ if(!LoggedUser){
    alert('You are not authenticated! Please log in to access this page.')
    location.href = "../index.html"
  }
+ const logout = document.getElementById('logout')
+logout.addEventListener('click',(e)=>{
+  e.preventDefault()
+  //alert('kk')
+  window.localStorage.removeItem('LoggedUser')
+  location.href= '../index.html'
+})
+
 let url = "";
 var imageInput = document.getElementById("cover-image");
 imageInput.addEventListener("change", () => {

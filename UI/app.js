@@ -226,22 +226,30 @@ var form = document
     loginMessage.innerHTML =
        '<div id="errors-login" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: #191; border-radius: 3px; border: 1px solid #b1361e; >' +
        '<p style="width: 100%; margin:0; padding: 0; text-align: center;">Invalid login details! </p> </div>'
-  }
+  }else{
 
-  const data = await response.json();
-  console.log(data);
-  const userId = data.userId;
-  const token = data.token;
-  const userData = await fetch(`https://my-portfolio-production-2587.up.railway.app/users/u/${userId}`)
-  const userDataJson = await userData.json()
-  const userCredentials = userDataJson.data
-  localStorage.setItem('LoggedUser', JSON.stringify(userCredentials));
-  localStorage.setItem('auth-token', token );
+    const data = await response.json();
+    console.log(data);
+    const userId = data.userId;
+    const token = data.token;
+    const userData = await fetch(`https://my-portfolio-production-2587.up.railway.app/users/u/${userId}`)
+    const userDataJson = await userData.json()
+    const userCredentials = userDataJson.data
 
+    localStorage.setItem('LoggedUser', JSON.stringify(userCredentials));
+    localStorage.setItem('auth-token', token );
+  
+    //let m = JSON.parse(userCredentials)
+   // alert(userCredentials.admin)
+    // Redirect to dashboard or do something else with the response data
+    if(userCredentials.admin === true){
+      alert('You are an administrator')
+      location.href = "dashboard/admin-dashboard.html"
+    }else{
 
-  //console.log(userDataJson.data)
-  // Redirect to dashboard or do something else with the response data
-  location.href = "dashboard/dashboard.html"
+      location.href = "dashboard/dashboard.html"
+    }
+}
 } catch (error) {
   console.error(error);
 }

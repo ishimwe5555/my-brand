@@ -9,6 +9,15 @@ const userId = userData._id
 const userName = userData.username
 const usernameHolder = document.querySelector("#logged-user");
 usernameHolder.innerHTML = userName;
+const logout = document.getElementById('logout')
+logout.addEventListener('click',(e)=>{
+  e.preventDefault()
+  //alert('kk')
+  window.localStorage.removeItem('LoggedUser')
+  window.localStorage.removeItem('auth-token')
+
+  location.href= '../index.html'
+})
 
 const url = window.location.href.split("%27");
 const blogID = url[1];
@@ -129,23 +138,24 @@ const deleteAll = document.querySelector(".btn-danger");
 
   blogComments.sort((a, b) => a.date - b.date).reverse();
   blogComments.forEach((element, index) => {
-    if (element._userId === userId) {
-      commentsContainer.innerHTML += `
-            <div class="comment-content">
-            <div class="user-delete">
-            <h4>${userName}</h4>
-            <button class="deleteOne" onclick="deleteMessage(${index})">Delete</button>
-            </div>    
-            <p class='time'>${date}</p>
-            <p class="short-description">
-              ${element.comment}
-            </p>
-          </div>        
-            `;
-    } else {
+  
+    // if (element._userId === userId) {
+    //   commentsContainer.innerHTML += `
+    //         <div class="comment-content">
+    //         <div class="user-delete">
+    //         <h4>${userName}</h4>
+    //         <button class="deleteOne" onclick="deleteMessage(${index})">Delete</button>
+    //         </div>    
+    //         <p class='time'>${date}</p>
+    //         <p class="short-description">
+    //           ${element.comment}
+    //         </p>
+    //       </div>        
+    //         `;
+    // } else {
       commentsContainer.innerHTML += `
         <div class="comment-content">
-        <h4>${element.username}</h4>
+        <h4>${userName}</h4>
          
         <p class='time'>${date}</p>
         <p class="short-description">
@@ -153,7 +163,7 @@ const deleteAll = document.querySelector(".btn-danger");
         </p>
       </div>        
         `;
-    }
+    // }
    });
  
 const deleteMessage = (btn) => {

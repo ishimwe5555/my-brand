@@ -5,8 +5,15 @@ if(!LoggedUser){
    location.href = "../index.html"
  }
 const l = document.querySelector('#logged-user')
-l.innerHTML = LoggedUser
+l.innerHTML = 'Admin'
 
+const logout = document.getElementById('logout')
+logout.addEventListener('click',(e)=>{
+  e.preventDefault()
+  //alert('kk')
+  window.localStorage.removeItem('LoggedUser')
+  location.href= '../index.html'
+})
 let url = "";
 var imageInput = document.getElementById("cover-image");
 imageInput.addEventListener("change", () => {
