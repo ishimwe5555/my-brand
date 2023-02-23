@@ -117,7 +117,6 @@ async function getPost(id) {
     } catch (error) {
       console.error(error);
     }
-   
     }
 
   })
