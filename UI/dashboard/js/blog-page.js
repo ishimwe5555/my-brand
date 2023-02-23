@@ -160,43 +160,14 @@ const deleteMessage = (btn) => {
   if (btn > -1) {
     // only splice array when item is found
     const removedComment = blogComments.splice(btn, 1); // 2nd parameter means remove one item only
-    try{
-      const response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/login', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(credentials)
-    })
-   
-    if (!response.ok) {
-       alert('Error deleting comment .. Please retry')
-    }
-  
-    const data = await response.json();
-    console.log(data);
-    const userId = data.userId;
-    const token = data.token;
-    const userData = await fetch(`https://my-portfolio-production-2587.up.railway.app/users/u/${userId}`)
-    const userDataJson = await userData.json()
-    const userCredentials = userDataJson.data
-    localStorage.setItem('LoggedUser', JSON.stringify(userCredentials));
-    localStorage.setItem('auth-token', token );
-  
-  
-    //console.log(userDataJson.data)
-    // Redirect to dashboard or do something else with the response data
-    location.href = "dashboard/dashboard.html"
-  } catch (error) {
-    console.error(error);
-  // }
-  //   blogComments.splice(
-  //     blogComments.findIndex((elem) => elem._id === removedComment[0]._id),
-  //     1
-  //   );
+    
+    blogComments.splice(
+      blogComments.findIndex((elem) => elem._id === removedComment[0]._id),
+      1
+    );
 
-  //   window.localStorage.setItem("comments", JSON.stringify(allComments));
-  //   alert("Comment Deleted");
+    window.localStorage.setItem("comments", JSON.stringify(allComments));
+    alert("Comment Deleted");
     location.reload();
   }
 };
