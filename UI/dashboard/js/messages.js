@@ -1,5 +1,4 @@
 //import { getMessages } from "../../../server/src/controllers/messages"
-
 const LoggedUser = localStorage.getItem('LoggedUser')
 
 if(!LoggedUser){
@@ -7,6 +6,7 @@ if(!LoggedUser){
    location.href = "../index.html"
  }
  const logout = document.getElementById('logout')
+
  logout.addEventListener('click',(e)=>{
    e.preventDefault()
    //alert('kk')
@@ -27,7 +27,7 @@ const response = await fetch(`https://my-portfolio-production-2587.up.railway.ap
       },})
 const result = await response.json();
 const getMessages = result.Messages;
-console.log(getMessages);
+console.log(getMessages.length);
 const messageContainer = document.querySelector("#all-messages");
 
 if(!getMessages||getMessages.length == 0){
@@ -80,23 +80,15 @@ const deleteMessage = await fetch(`https://my-portfolio-production-2587.up.railw
         'Content-Type': 'application/json;charset=utf-8',
         'Authorization': `Bearer ${token}`
       },})      
-const deleteMessageResponse = await deleteMessage.json();
-if(deleteMessageResponse.ok){
-   alert('deleted')
-
+//const deleteMessageResponse = await deleteMessage.json();
+if(deleteMessage.ok){
+   alert('Message deleted')
 location.reload()
 }
 else{
-   alert('error deleting')
+   console.error('Error deleting')
 }
-   //console.log(btn);
-//     if (btn > -1) { // only splice array when item is found
-
-//         getMessages.splice(btn, 1); // 2nd parameter means remove one item only
-//         window.localStorage.setItem("messages", JSON.stringify(getMessages));
-//  }
  };
-
 
 const deleteAll = document.querySelector('.btn-danger')
 deleteAll.addEventListener('click',(e)=>{
@@ -104,9 +96,27 @@ deleteAll.addEventListener('click',(e)=>{
    deleteAllMessages()
  
 })
-const deleteAllMessages = ()=>{
-   getMessages = []
-   window.localStorage.removeItem("messages");
+async function deleteAllMessages(){
+   const token = localStorage.getItem('auth-token')
+   const response = await fetch(`https://my-portfolio-production-2587.up.railway.app/messages`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': `Bearer ${token}`
+      },})
+const result = await response.json();
+let getMessages = result.Messages;
+
+getMessages.forEach(async (element) => {
+   const deleteMessage = await fetch(`https://my-portfolio-production-2587.up.railway.app/messages/delete/${element._id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'Authorization': `Bearer ${token}`
+      },})      
+
+});
+ //  window.localStorage.removeItem("messages");
    alert("All Messages Deleted")
    
        location.reload();
