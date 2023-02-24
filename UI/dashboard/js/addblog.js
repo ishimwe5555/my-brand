@@ -70,20 +70,21 @@ var form = document
 
         const rawResponse = await fetch('https://my-portfolio-production-2587.up.railway.app/blogs/create', {
           method: 'POST',
-          body: JSON.stringify(data),
           headers: {
-          'Authorization' : `Bearer ${token}`
-          }
+            'Authorization' : `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+          body: data,
         });
         const result = await rawResponse.json();
-        if(!result.ok){
-          console.log(result);
+        console.log(result);
+        if(!rawResponse.ok){
+          //console.log(result);
           submitMessage.innerHTML =
           '<div id="errors" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: #191; border-radius: 3px; border: 1px solid #1eb136;; >' +
           '<p style="width: 100%; margin:0; padding: 0; text-align: center;"> Blog not added! </p> </div>';
           clearForm()
         }
-          
   // Redirect to dashboard or do something else with the response data
   //location.href = "../admin-dashboard.html"
 } catch (error) {
