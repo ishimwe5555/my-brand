@@ -36,7 +36,7 @@ var form = document
      username: document.getElementById("username").value,
      password: document.getElementById("password").value,
     };
-    
+    showLoading()
     const response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/signup', {
       method: 'POST',
       headers: {
@@ -44,6 +44,7 @@ var form = document
       },
       body: JSON.stringify(user)
     });
+    hideLoading()
     const result = await response.json();
     console.log(result.code);
     if(!result.code===409)

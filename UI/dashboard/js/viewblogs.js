@@ -2,14 +2,15 @@ window.addEventListener('load', function() {
   const loadingAnimation = document.getElementById('loading-animation');
   loadingAnimation.style.display = 'none';
 });
-// Add an event listener to the document to listen for when a request is made
-document.addEventListener("readystatechange", function(event) {
-  if (event.target.readyState === "loading") {
-    showLoading();
-  } else if (event.target.readyState === "complete") {
-    hideLoading();
-  }
-});
+// Show the loading animation
+function showLoading() {
+  document.getElementById("loading").style.display = "flex";
+}
+
+// Hide the loading animation
+function hideLoading() {
+  document.getElementById("loading").style.display = "none";
+}
 
 
 const LoggedUser = localStorage.getItem('LoggedUser')
