@@ -1,41 +1,118 @@
-const LoggedUser = localStorage.getItem('LoggedUser')
 
+const LoggedUser = localStorage.getItem('LoggedUser')
 if(!LoggedUser){
    alert('You are not authenticated! Please log in to access this page.')
    location.href = "../index.html"
  }
- const logout = document.getElementById('logout')
+
+const logout = document.getElementById('logout')
 logout.addEventListener('click',(e)=>{
   e.preventDefault()
   //alert('kk')
   window.localStorage.removeItem('LoggedUser')
-  window.localStorage.removeItem('auth-token')
-
   location.href= '../index.html'
 })
-const title = document.querySelector('#title')
-const category = document.querySelector('#category')
-const coverImage = document.querySelector('#cover-image')
-const content = document.querySelector('#content')
-const updateBtn = document.querySelector('#submit-blog')
+let url = "";
+var imageInput = document.getElementById("cover-image");
+imageInput.addEventListener("change", () => {
+  let fileReader = new FileReader();
+  fileReader.readAsDataURL(imageInput.files[0]);
+  fileReader.addEventListener("load", () => {
+     url = fileReader.result;
+       // console.log(url);
+  });
+});
 
-const url = window.location.href.split('%27');
-const blogID = url[1]
+window.addEventListener('load', function() {
+  const loadingAnimation = document.getElementById('loading-animation');
+  loadingAnimation.style.display = 'none';
+});
 
-const allBlogs = JSON.parse(localStorage.getItem('blogs'));
+var form = document
+  .getElementById("edit-blog-form")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-const myBlog = allBlogs.filter((post)=> post.id == blogID);
+    //gets each blog input
+    const title = document.getElementById("title").value;
+    const category = document.getElementById("category").value;
+    const coverImage = document.getElementById("cover-image").value;
+    const content = document.getElementById("content").value;
+    var submitMessage = document.getElementById("errors-success");
+    //const token = localStorage.getItem('auth-token')
+    //   var regex = new RegExp(expression);
 
-title.value = myBlog[0].title
-category.value = myBlog[0].category
-content.append(myBlog[0].content)
+    // checks if all fields are filled. If not, it i will fire an alert to tell the user to fill all fields
+    if (!title || !content) {
+      //   alert("Please fill all fields!");
+      submitMessage.innerHTML =
+        '<div id="errors" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: hsla(10, 71%, 41%, 10%); border-radius: 3px; border: 1px solid #b1361e; >' +
+        '<p style="width: 100%; margin:0; padding: 0; text-align: center;">Please Fill in required blog details! </p> </div>';
+    } else {
+     
+      //If there no previously added messages, the newly added message will be added to the local storage
+       try{
+        const idUrl = window.location.href.split("%27");
+        const blogID = idUrl[1];
+    const title = document.getElementById("title").value;
+    //const category = document.getElementById("category").value;
+    const coverImage = document.getElementById("cover-image");
+    const content = document.getElementById("content").value;
+    const token = localStorage.getItem('auth-token')
+    
+    var data = new FormData()
+       // if (coverImage && coverImage.files && coverImage.files.length > 0) {
+    data.append('title', title)
+    data.append('content', content)
+    data.append('blogImage', coverImage.files[0]);
+    //console.log(coverImage.files[0]);
+      //  }
+       
+        //data.append('blogImage', coverImage.files[0]);
+        showLoading()
+        const rawResponse = await fetch(`https://my-portfolio-production-2587.up.railway.app/blogs/edit/${blogID}`, {
+          method: 'PUT',
+          body: data,
+          headers: {
+            'Authorization' : `Bearer ${token}`
+          }
+        })
+        const result = await rawResponse.json();
+        hideLoading()
+        if(!result || !result.code === 201){
+          //console.log(result);
+          submitMessage.innerHTML =
+          '<div id="errors" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: #191; border-radius: 3px; border: 1px solid #1eb136;; >' +
+          '<p style="width: 100%; margin:0; padding: 0; text-align: center;"> Blog not updated! </p> </div>';
+          clearForm()
+        }
+        // Redirect to dashboard or do something else with the response data
+        submitMessage.innerHTML =
+        '<div id="errors" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: #191; border-radius: 3px; border: 1px solid #1eb136;; >' +
+        '<p style="width: 100%; margin:0; padding: 0; text-align: center;"> Blog updated successfully! </p> </div>';
+        
+} catch (error) {
+  console.error(error);
+}
+    }
+  });
 
-updateBtn.addEventListener('click',(e)=>{
-    e.preventDefault;   
-    myBlog[0].title = title.value
-    myBlog[0].category = category.value
-    myBlog[0].content = content.value
-    localStorage.setItem('blogs',JSON.stringify(allBlogs))
-    alert('Blog is updated successfully')
+// a function to clear the form
+function clearForm() {
+  //resets the form fields
+  document.getElementById("title").value = "";
+  document.getElementById("category").value = "";
+  document.getElementById("cover-image").value = "";
+  document.getElementById("content").value = "";
+  //document.getElementById("references").value = ""; 
+}
 
-})
+// Show the loading animation
+function showLoading() {
+  document.getElementById("loading").style.display = "flex";
+}
+
+// Hide the loading animation
+function hideLoading() {
+  document.getElementById("loading").style.display = "none";
+}

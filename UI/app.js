@@ -64,7 +64,7 @@ var form = document
       email: document.getElementById("usernameLogin").value,
       password: document.getElementById("passwordLogin").value,
     };
-
+showLoading()
     try{
     const response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/login', {
     method: 'POST',
@@ -73,7 +73,7 @@ var form = document
     },
     body: JSON.stringify(credentials)
   })
- 
+  hideLoading()
   if (!response.ok) {
     loginMessage.innerHTML =
        '<div id="errors-login" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: #191; border-radius: 3px; border: 1px solid #b1361e; >' +
@@ -98,7 +98,6 @@ var form = document
       alert('You are an administrator')
       location.href = "dashboard/admin-dashboard.html"
     }else{
-
       location.href = "dashboard/dashboard.html"
     }
 }
@@ -109,4 +108,12 @@ var form = document
 
 
 
+// Show the loading animation
+function showLoading() {
+  document.getElementById("loading").style.display = "flex";
+}
 
+// Hide the loading animation
+function hideLoading() {
+  document.getElementById("loading").style.display = "none";
+}

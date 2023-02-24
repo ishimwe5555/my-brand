@@ -1,3 +1,7 @@
+window.addEventListener('load', function() {
+  const loadingAnimation = document.getElementById('loading-animation');
+  loadingAnimation.style.display = 'none';
+});
 const LoggedUser = localStorage.getItem('LoggedUser')
 
 if(!LoggedUser){
