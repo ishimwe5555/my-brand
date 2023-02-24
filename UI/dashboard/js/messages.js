@@ -65,6 +65,7 @@ messageContainer.innerHTML += `
 table();
 
 }
+showLoading()
 async function deleteMessage(btn){
    const token = localStorage.getItem('auth-token')
    //showLoading()
@@ -82,7 +83,6 @@ getMessages.reverse()
 // reversedMessages.splice(btn, 1)
 // getMessages = reversedMessages.reverse()
 messageToDeleteId = getMessages[btn]._id
-showLoading()
 const deleteMessage = await fetch(`https://my-portfolio-production-2587.up.railway.app/messages/delete/${messageToDeleteId}`, {
       method: 'DELETE',
       headers: {
