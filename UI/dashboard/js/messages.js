@@ -128,17 +128,16 @@ getMessages.forEach(async (element) => {
 });
  //  window.localStorage.removeItem("messages");
    alert("All Messages Deleted")
-   
        location.reload();
 
 }
 
 // Show the loading animation
-function showLoading() {
-   document.getElementById("loading").style.display = "flex";
- }
+// function showLoading() {
+//    document.getElementById("loading").style.display = "flex";
+//  }
  
- // Hide the loading animation
- function hideLoading() {
-   document.getElementById("loading").style.display = "none";
- }
+//  // Hide the loading animation
+//  function hideLoading() {
+//    document.getElementById("loading").style.display = "none";
+//  }
