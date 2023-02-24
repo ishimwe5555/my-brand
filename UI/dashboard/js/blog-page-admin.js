@@ -60,7 +60,7 @@ async function getPost(id) {
        <p>By <span class="name-span">Norbert Ishimwe</span></p>
   </div>
   <div class="like-comment">
-      <a id="like-button" href="" onclickk="toggleLike(this)" style="color:blue"> </a>
+      <a id="like-button" href="" onclickk="toggleLike(this)" style="color:blue"> 5 Likes</a>
       <a id="comment" href=""> <i class="far fa-comments"></i><span id="comms"> ${numberOfComments} comments</span></a>
   </div>
       `;
