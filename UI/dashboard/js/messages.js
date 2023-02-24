@@ -82,7 +82,7 @@ getMessages.reverse()
 // reversedMessages.splice(btn, 1)
 // getMessages = reversedMessages.reverse()
 messageToDeleteId = getMessages[btn]._id
-//showLoading()
+showLoading()
 const deleteMessage = await fetch(`https://my-portfolio-production-2587.up.railway.app/messages/delete/${messageToDeleteId}`, {
       method: 'DELETE',
       headers: {
@@ -90,7 +90,7 @@ const deleteMessage = await fetch(`https://my-portfolio-production-2587.up.railw
         'Authorization': `Bearer ${token}`
       },})      
 //const deleteMessageResponse = await deleteMessage.json();
-//hideLoading()
+hideLoading()
 if(deleteMessage.ok){
    alert('Message deleted')
 location.reload()
@@ -133,11 +133,11 @@ getMessages.forEach(async (element) => {
 }
 
 // Show the loading animation
-// function showLoading() {
-//    document.getElementById("loading").style.display = "flex";
-//  }
+function showLoading() {
+   document.getElementById("loading").style.display = "flex";
+ }
  
-//  // Hide the loading animation
-//  function hideLoading() {
-//    document.getElementById("loading").style.display = "none";
-//  }
+ // Hide the loading animation
+ function hideLoading() {
+   document.getElementById("loading").style.display = "none";
+ }
