@@ -14,6 +14,15 @@
 //--LOCAL STORAGE--
 // --Retrieving Logged in User--
 // ****SIGN-UP***
+// Add an event listener to the document to listen for when a request is made
+document.addEventListener("readystatechange", function(event) {
+  if (event.target.readyState === "loading") {
+    showLoading();
+  } else if (event.target.readyState === "complete") {
+    hideLoading();
+  }
+});
+
 
 var form = document
    .getElementById("signup-btn")
@@ -64,8 +73,8 @@ var form = document
       email: document.getElementById("usernameLogin").value,
       password: document.getElementById("passwordLogin").value,
     };
-    try{
     showLoading()
+    try{
     const response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/login', {
     method: 'POST',
     headers: {
