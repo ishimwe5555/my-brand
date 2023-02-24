@@ -38,7 +38,7 @@ async function getPost(id) {
     const blogComments = commmentsObject.Comments;
     let numberOfComments = blogComments ? blogComments.length : 0;
     //console.log(blogComments);
-  
+  hideLoading()
     const date = blogPost.date;
     blogPostHTML.innerHTML = `
   <div class="blog-title">
@@ -200,11 +200,11 @@ async function getPost(id) {
   }
 
 // Show the loading animation
-// function showLoading() {
-//     document.getElementById("loading").style.display = "flex";
-//   }
+function showLoading() {
+    document.getElementById("loading").style.display = "flex";
+  }
   
-//   // Hide the loading animation
-//   function hideLoading() {
-//     document.getElementById("loading").style.display = "none";
-//   }
+  // Hide the loading animation
+  function hideLoading() {
+    document.getElementById("loading").style.display = "none";
+  }
