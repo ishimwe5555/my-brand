@@ -92,7 +92,7 @@ const deleteMessage = await fetch(`https://my-portfolio-production-2587.up.railw
 //const deleteMessageResponse = await deleteMessage.json();
 hideLoading()
 if(deleteMessage.ok){
-   alert('Message deleted')
+ //  alert('Message deleted')
 location.reload()
 }
 else{
