@@ -78,7 +78,6 @@ var form = document
           }
         })
         const result = await rawResponse.json();
-        hideLoading()
         if(!result || !result.code === 201){
           //console.log(result);
           submitMessage.innerHTML =
@@ -88,10 +87,11 @@ var form = document
         }
         // Redirect to dashboard or do something else with the response data
         alert('Blog added successfully')
-  location.href = "admin-dashboard.html"
-} catch (error) {
-  console.error(error);
-}
+        location.href = "admin-dashboard.html"
+      } catch (error) {
+        console.error(error);
+      }
+      hideLoading()
     }
   });
 
