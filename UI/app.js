@@ -64,8 +64,8 @@ var form = document
       email: document.getElementById("usernameLogin").value,
       password: document.getElementById("passwordLogin").value,
     };
-showLoading()
     try{
+    showLoading()
     const response = await fetch('https://my-portfolio-production-2587.up.railway.app/users/login', {
     method: 'POST',
     headers: {
