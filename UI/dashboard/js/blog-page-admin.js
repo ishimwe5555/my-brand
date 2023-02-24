@@ -198,7 +198,7 @@ async function getPost(id) {
   }
   
   }
-hideLoading()
+
 // Show the loading animation
 function showLoading() {
     document.getElementById("loading").style.display = "flex";

@@ -104,3 +104,12 @@ function clearForm() {
   document.getElementById("content").value = "";
   //document.getElementById("references").value = ""; 
 }
+// Show the loading animation
+function showLoading() {
+  document.getElementById("loading").style.display = "flex";
+}
+
+// Hide the loading animation
+function hideLoading() {
+  document.getElementById("loading").style.display = "none";
+}

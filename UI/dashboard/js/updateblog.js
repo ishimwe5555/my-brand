@@ -69,6 +69,7 @@ var form = document
       //  }
        
         //data.append('blogImage', coverImage.files[0]);
+        showLoading()
         const rawResponse = await fetch(`https://my-portfolio-production-2587.up.railway.app/blogs/edit/${blogID}`, {
           method: 'PUT',
           body: data,
@@ -76,7 +77,6 @@ var form = document
             'Authorization' : `Bearer ${token}`
           }
         })
-        showLoading()
         const result = await rawResponse.json();
         hideLoading()
         if(!result || !result.code === 201){

@@ -15,10 +15,15 @@ if(!LoggedUser){
    location.href= '../index.html'
  })
 
+//  window.addEventListener('load', function() {
+//    const loadingAnimation = document.getElementById('loading-animation');
+//    loadingAnimation.style.display = 'none';
+//  });
+ 
  window.onload = getMessagez();
-
 async function getMessagez(){
 const token = localStorage.getItem('auth-token')
+showLoading()
 const response = await fetch(`https://my-portfolio-production-2587.up.railway.app/messages`, {
       method: 'GET',
       headers: {
@@ -26,8 +31,9 @@ const response = await fetch(`https://my-portfolio-production-2587.up.railway.ap
         'Authorization': `Bearer ${token}`
       },})
 const result = await response.json();
+hideLoading()
 const getMessages = result.Messages;
-console.log(getMessages.length);
+//console.log(getMessages.length);
 const messageContainer = document.querySelector("#all-messages");
 
 if(!getMessages||getMessages.length == 0){
@@ -61,6 +67,7 @@ table();
 }
 async function deleteMessage(btn){
    const token = localStorage.getItem('auth-token')
+   showLoading()
    const response = await fetch(`https://my-portfolio-production-2587.up.railway.app/messages`, {
       method: 'GET',
       headers: {
@@ -68,12 +75,14 @@ async function deleteMessage(btn){
         'Authorization': `Bearer ${token}`
       },})
 const result = await response.json();
+
 let getMessages = result.Messages;
 
 getMessages.reverse()
 // reversedMessages.splice(btn, 1)
 // getMessages = reversedMessages.reverse()
 messageToDeleteId = getMessages[btn]._id
+showLoading()
 const deleteMessage = await fetch(`https://my-portfolio-production-2587.up.railway.app/messages/delete/${messageToDeleteId}`, {
       method: 'DELETE',
       headers: {
@@ -81,6 +90,7 @@ const deleteMessage = await fetch(`https://my-portfolio-production-2587.up.railw
         'Authorization': `Bearer ${token}`
       },})      
 //const deleteMessageResponse = await deleteMessage.json();
+hideLoading()
 if(deleteMessage.ok){
    alert('Message deleted')
 location.reload()
@@ -122,3 +132,13 @@ getMessages.forEach(async (element) => {
        location.reload();
 
 }
+
+// Show the loading animation
+function showLoading() {
+   document.getElementById("loading").style.display = "flex";
+ }
+ 
+ // Hide the loading animation
+ function hideLoading() {
+   document.getElementById("loading").style.display = "none";
+ }
