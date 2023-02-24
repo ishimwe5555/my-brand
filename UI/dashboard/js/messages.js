@@ -23,7 +23,7 @@ if(!LoggedUser){
  window.onload = getMessagez();
 async function getMessagez(){
 const token = localStorage.getItem('auth-token')
-showLoading()
+//showLoading()
 const response = await fetch(`https://my-portfolio-production-2587.up.railway.app/messages`, {
       method: 'GET',
       headers: {
@@ -31,7 +31,7 @@ const response = await fetch(`https://my-portfolio-production-2587.up.railway.ap
         'Authorization': `Bearer ${token}`
       },})
 const result = await response.json();
-hideLoading()
+//hideLoading()
 const getMessages = result.Messages;
 //console.log(getMessages.length);
 const messageContainer = document.querySelector("#all-messages");
@@ -67,7 +67,7 @@ table();
 }
 async function deleteMessage(btn){
    const token = localStorage.getItem('auth-token')
-   showLoading()
+   //showLoading()
    const response = await fetch(`https://my-portfolio-production-2587.up.railway.app/messages`, {
       method: 'GET',
       headers: {
@@ -82,7 +82,7 @@ getMessages.reverse()
 // reversedMessages.splice(btn, 1)
 // getMessages = reversedMessages.reverse()
 messageToDeleteId = getMessages[btn]._id
-showLoading()
+//showLoading()
 const deleteMessage = await fetch(`https://my-portfolio-production-2587.up.railway.app/messages/delete/${messageToDeleteId}`, {
       method: 'DELETE',
       headers: {
@@ -90,7 +90,7 @@ const deleteMessage = await fetch(`https://my-portfolio-production-2587.up.railw
         'Authorization': `Bearer ${token}`
       },})      
 //const deleteMessageResponse = await deleteMessage.json();
-hideLoading()
+//hideLoading()
 if(deleteMessage.ok){
    alert('Message deleted')
 location.reload()
