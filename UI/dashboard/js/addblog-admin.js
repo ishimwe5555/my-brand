@@ -53,6 +53,7 @@ var form = document
     } else {
      
       //If there no previously added messages, the newly added message will be added to the local storage
+      showLoading()
        try{
     const title = document.getElementById("title").value;
     //const category = document.getElementById("category").value;
@@ -69,7 +70,6 @@ var form = document
       //  }
        
         //data.append('blogImage', coverImage.files[0]);
-        showLoading()
         const rawResponse = await fetch('https://my-portfolio-production-2587.up.railway.app/blogs/create', {
           method: 'POST',
           body: data,
