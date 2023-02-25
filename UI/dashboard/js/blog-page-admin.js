@@ -24,7 +24,7 @@ const blogID = url[1]
 const blogPostHTML = document.getElementById('blog-post-id');
 
 window.onload = getPost(blogID)
-showLoading()
+//showLoading()
 async function getPost(id) {
     const url = `https://my-portfolio-production-2587.up.railway.app/blogs/b/${blogID}`;
     const response = await fetch(url);
@@ -38,7 +38,7 @@ async function getPost(id) {
     const blogComments = commmentsObject.Comments;
     let numberOfComments = blogComments ? blogComments.length : 0;
     //console.log(blogComments);
-  hideLoading()
+  //hideLoading()
     const date = blogPost.date;
     blogPostHTML.innerHTML = `
   <div class="blog-title">
@@ -89,6 +89,7 @@ async function getPost(id) {
           '<div id="errors" style="width: 100%; height: 40px; padding: 0px 0; margin: 0px 0; font-size: 14px; color: #000; display: flex; justify-content: center; align-items: center; background-color: hsla(10, 71%, 41%, 10%); border-radius: 3px; border: 1px solid #b1361e; >' +
           '<p style="width: 100%; margin:0; padding: 0; text-align: center;">No comment have been written </p> </div>';
       } else {
+        showLoading()
         try{
           var commentText = document.getElementById("comment-input").value;
           const token = localStorage.getItem('auth-token')
@@ -117,7 +118,7 @@ async function getPost(id) {
       } catch (error) {
         console.error(error);
       }
-     
+     hideLoading()
       }
   
     })
