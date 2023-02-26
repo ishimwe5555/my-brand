@@ -65,9 +65,9 @@ messageContainer.innerHTML += `
 table();
 
 }
-showLoading()
 async function deleteMessage(btn){
-   const token = localStorage.getItem('auth-token')
+  const token = localStorage.getItem('auth-token')
+  showLoading()
    //showLoading()
    const response = await fetch(`https://my-portfolio-production-2587.up.railway.app/messages`, {
       method: 'GET',
